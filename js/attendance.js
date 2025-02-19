@@ -1,11 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const swimmerNames = ["Swimmer 1", "Swimmer 2", "Swimmer 3", "Swimmer 4"];
-  const tableBody = document.getElementById("attendance-body");
-  const saveButton = document.getElementById("save-attendance");
-  const message = document.getElementById("attendance-message");
+// Ensure the script is loading
+console.log("attendance.js is loaded!");
 
-  // Populate table with swimmers
-  function populateAttendanceTable(swimmerNames = []) {
+// Function to populate the attendance table
+function populateAttendanceTable(swimmerNames = []) {
+    console.log("populateAttendanceTable is now defined!");
     const tableBody = document.getElementById("attendance-body");
     tableBody.innerHTML = ""; // Clear existing rows
 
@@ -25,10 +23,63 @@ document.addEventListener("DOMContentLoaded", function () {
     populateAttendanceTable(storedSwimmers);
 });
 
+// CSV Upload Function
+document.getElementById("uploadCsv").addEventListener("click", function () {
+    const fileInput = document.getElementById("csvFile");
+    const message = document.getElementById("uploadMessage");
 
-  // Save attendance data (temporarily in localStorage)
-  saveButton.addEventListener("click", function () {
+    if (!fileInput.files.length) {
+        message.textContent = "Please select a CSV file.";
+        message.style.color = "red";
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        const csvData = event.target.result.trim();
+        console.log("CSV Data Loaded:", csvData);
+        const rows = csvData.split("\n");
+        let swimmerNames = [];
+
+        rows.forEach(row => {
+            let name = row.trim();
+            if (name) swimmerNames.push(name);
+        });
+
+        console.log("Parsed Names:", swimmerNames);
+
+        if (swimmerNames.length === 0) {
+            message.textContent = "CSV file appears empty or incorrect format.";
+            message.style.color = "red";
+            return;
+        }
+
+        // Save swimmer names in localStorage
+        localStorage.setItem("swimmers", JSON.stringify(swimmerNames));
+
+        // Update the attendance table
+        populateAttendanceTable(swimmerNames);
+
+        message.textContent = "Swimmers imported successfully!";
+        message.style.color = "green";
+    };
+
+    reader.onerror = function () {
+        console.error("Error reading file");
+        message.textContent = "Error reading file.";
+        message.style.color = "red";
+    };
+
+    reader.readAsText(file);
+});
+
+// Save attendance records by date
+document.getElementById("save-attendance").addEventListener("click", function () {
     const date = document.getElementById("date").value;
+    const message = document.getElementById("attendance-message");
+
     if (!date) {
         message.textContent = "Please select a date.";
         message.style.color = "red";
@@ -36,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const checkboxes = document.querySelectorAll(".attendance-check");
+    const storedSwimmers = JSON.parse(localStorage.getItem("swimmers")) || [];
     let attendanceData = [];
 
     checkboxes.forEach((checkbox, index) => {
@@ -53,69 +105,68 @@ document.addEventListener("DOMContentLoaded", function () {
 
     message.textContent = "Attendance saved for " + date + "!";
     message.style.color = "green";
-  });
-
-  document.getElementById("viewAttendance").addEventListener("click", function () {
-    const attendanceHistoryDiv = document.getElementById("attendanceHistory");
-    const allAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
-    
-    if (Object.keys(allAttendance).length === 0) {
-        attendanceHistoryDiv.innerHTML = "<p>No attendance records found.</p>";
-        return;
-    }
-
-    attendanceHistoryDiv.innerHTML = "<h3>Past Attendance Records</h3>";
-
-    for (const [date, records] of Object.entries(allAttendance)) {
-        let table = `<h4>${date}</h4><table><tr><th>Swimmer</th><th>Present</th></tr>`;
-        
-        records.forEach(record => {
-            table += `<tr>
-                        <td>${record.name}</td>
-                        <td>${record.present ? "✔️" : "❌"}</td>
-                      </tr>`;
-        });
-
-        table += "</table>";
-        attendanceHistoryDiv.innerHTML += table;
-    }
-  });
-
 });
 
-document.getElementById("uploadCsv").addEventListener("click", function () {
-  const fileInput = document.getElementById("csvFile");
-  const message = document.getElementById("uploadMessage");
-  
-  if (!fileInput.files.length) {
-      message.textContent = "Please select a CSV file.";
-      message.style.color = "red";
+// View past attendance
+document.getElementById("viewAttendance").addEventListener("click", function () {
+  const attendanceHistoryDiv = document.getElementById("attendanceHistory");
+  const allAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
+
+  // Get the selected date range
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  if (!startDate && !endDate) {
+      attendanceHistoryDiv.innerHTML = "<p>Please select a date range.</p>";
       return;
   }
 
-  const file = fileInput.files[0];
-  const reader = new FileReader();
+  attendanceHistoryDiv.innerHTML = "<h3>Attendance Summary</h3>";
 
-  reader.onload = function (event) {
-      const csvData = event.target.result;
-      const rows = csvData.split("\n");
-      let swimmerNames = [];
+  let totalSessions = 0;
+  let totalPresent = {};
+  let totalPossible = {};
 
-      rows.forEach(row => {
-          let name = row.trim();
-          if (name) swimmerNames.push(name);
+  // Initialize attendance counters
+  const storedSwimmers = JSON.parse(localStorage.getItem("swimmers")) || [];
+  storedSwimmers.forEach(name => {
+      totalPresent[name] = 0;
+      totalPossible[name] = 0;
+  });
+
+  // Loop through all attendance records
+  for (const [date, records] of Object.entries(allAttendance)) {
+      // Check if the date falls within the selected range
+      if (
+          (startDate && date < startDate) ||
+          (endDate && date > endDate)
+      ) {
+          continue;
+      }
+
+      totalSessions++;
+
+      records.forEach(record => {
+          totalPossible[record.name]++;
+          if (record.present) {
+              totalPresent[record.name]++;
+          }
       });
+  }
 
-      // Save swimmer names in localStorage
-      localStorage.setItem("swimmers", JSON.stringify(swimmerNames));
+  // Calculate and display percentages
+  let summaryTable = `<table><tr><th>Swimmer</th><th>Attendance (%)</th></tr>`;
+  storedSwimmers.forEach(name => {
+      const percentage = totalPossible[name] > 0 
+          ? ((totalPresent[name] / totalPossible[name]) * 100).toFixed(2)
+          : 0;
+      summaryTable += `
+          <tr>
+              <td>${name}</td>
+              <td>${percentage}%</td>
+          </tr>`;
+  });
+  summaryTable += `</table>`;
 
-      // Update the attendance table
-      populateAttendanceTable(swimmerNames);
-
-      message.textContent = "Swimmers imported successfully!";
-      message.style.color = "green";
-  };
-
-  reader.readAsText(file);
+  attendanceHistoryDiv.innerHTML += summaryTable;
 });
-

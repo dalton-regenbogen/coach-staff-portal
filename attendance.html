@@ -33,7 +33,7 @@
         <thead>
           <tr>
             <th>Swimmer Name</th>
-            <th>Attendance</th>
+            <th>Attendance Status</th>
           </tr>
         </thead>
         <tbody id="attendance-body">
@@ -44,9 +44,14 @@
       <button id="save-attendance">Save Attendance</button>
       <p id="attendance-message"></p>
 
-      <button id="viewAttendance">View Past Attendance</button>
+      <h3>View Past Attendance</h3>
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate">
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate">
+      <button id="viewAttendance">View Attendance</button>
       <div id="attendanceHistory"></div>
-      
+
     </main>
 
     <script src="js/attendance.js"></script>

@@ -120,3 +120,24 @@ button {
 button:hover {
   background: #003f7f;
 }
+
+#attendanceHistory table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+#attendanceHistory th, #attendanceHistory td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+#attendanceHistory th {
+  background: #00509E;
+  color: white;
+}
+
+#attendanceHistory td {
+  background: #f4f4f4;
+}
