@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker - BHST Staff Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header>
+      <h1>Attendance Tracker</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="staff.html">Staff Resources</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="attendance.html">Attendance Tracker</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2>Mark Attendance</h2>
+      <label for="date">Select Date</label>
+      <input type="date" id="date">
+
+      <h2>Import Swimmer List</h2>
+      <input type="file" id="csvFile" accept=".csv">
+      <button id="uploadCsv">Upload</button>
+      <p id="uploadMessage"></p>
+
+      <table id="attendance-table">
+        <thead>
+          <tr>
+            <th>Swimmer Name</th>
+            <th>Attendance</th>
+          </tr>
+        </thead>
+        <tbody id="attendance-body">
+
+        </tbody>
+      </table>
+
+      <button id="save-attendance">Save Attendance</button>
+      <p id="attendance-message"></p>
+
+      <button id="viewAttendance">View Past Attendance</button>
+      <div id="attendanceHistory"></div>
+      
+    </main>
+
+    <script src="js/attendance.js"></script>
+  </body>
+</html>
