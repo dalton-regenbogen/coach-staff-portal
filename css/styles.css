@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   color: #1a1a1a;
 }
 
@@ -18,28 +18,24 @@ header {
   background-color: #CC2F33;
   padding: 5px;
 }
-
 header h1 {
   font-size: 4.0rem;
   margin-top: 0;
   margin-bottom: 0;
   font-family: Impact, sans-serif;
 }
-
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
 }
-
 .navbar .logo {
   font-family: Impact;
   font-size: 28px;
   color: #000000;
   text-decoration: none;
 }
-
 .navbar .nav-links {
   display: flex;
   list-style: none;
@@ -54,7 +50,6 @@ header h1 {
   text-decoration: none;
   font-weight: bold;
 }
-
 .navbar .nav-toggle {
   display: none;
   font-size: 28px;
@@ -64,21 +59,20 @@ header h1 {
   cursor: pointer;
 }
 
+
 /* Hero Section */
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 500px 20px;
-  color: #00000;
+  padding: 50px 20px;
+  color: #000000;
   text-align: center;
 }
-
 .hero h1 {
   font-size: 2.5rem;
   color: #000000;
   margin-bottom: 20px;
 }
-
 .hero p {
   font-size: .95rem;
   color: #4d4d4d;
@@ -216,31 +210,40 @@ td {
   background: #f4f4f4;
 }
 
+/* Footer Section */
 footer {
   text-align: center;
-  padding: 10px;
-  background: #1A1A1A;
-  color: #FFFFFF;
+  position: relative;      /* Create a stacking context for the pseudo-element */
+  overflow: hidden;        /* Hide any overflow from the pseudo-element */
+  background-color: #f8f8f8; /* Footer background color */
+  padding-top: 500px;       /* Adjust as needed for your layout */
+  padding-bottom: 20px;    /* Added padding to keep content away from the wave */
 }
 
-.footer-address {
-  display: inline-block;
-  background-color: #FF3B3F;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: #FFFFFF;
-  border-radius: 4px;
-  font-weight: bold;
-  box-shadow: 0 0 10px rgb(255, 255, 255, 0.15);
-}
-
-.footer-address p {
-  margin-top: 6px;
-  margin-bottom: 6px;
-} 
-
-.footer-address h3 {
+footer p, footer a {
   color: #ffffff;
-  font-size: 1.2rem;
+  text-decoration: none;
+  font-size: .9em;
+}
+
+/* Pseudo-element for the wave SVG */
+footer::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;           /* Adjust height to match your wave design */
+  background-image: url('../assets/footerWave.svg'); /* Ensure the path and file name are correct */
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: cover;  /* Use 'cover' for responsive scaling */
+  z-index: 0;              /* Place this behind the footer content */
+}
+
+/* Ensure footer content appears above the pseudo-element */
+footer > * {
+  position: relative;
+  z-index: 1;
 }
 
