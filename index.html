@@ -8,19 +8,45 @@
   </head>
   <body>
     <header>
-      <h1>Welcome to the BHST Coaching Portal!</h1>
-      <nav>
-          <ul>
+      <nav class="navbar">
+        <a href="index.html" class="logo">Brookside Hurricanes</a>
+          <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="staff.html">Staff Resources</a></li>
             <li><a href="announcements.html">Announcements</a></li>
             <li><a href="attendance.html">Attendance Tracker</a></li>
             <li><a href="login.html">Login</a></li>
           </ul>
+          <button class="nav-toggle">☰</button>
       </nav>
     </header>
     <main>
-      <p>This will be the central hub for coaching staff resources and tools.</p>
+      <section class="hero">
+        <div class="hero-content">
+            <h1>Stay Connected with Your Team</h1>
+            <p>Manage your coaching staff and streamline communication seamlessly.</p>
+            <a href="announcements.html" class="cta-button">View Announcements</a>
+        </div>
+      </section>
     </main>
+    <footer>
+      <section class="footer-address">
+        <h3>Pool Location</h3>
+        <p>7197 Riley Rd</p>
+        <p>Warrenton, VA 20187</p>
+      </section>
+      <p>&copy; 2025 Brookside Hurricanes Coaching Staff Portal. All rights reserved.</p>
+    </footer>
+
+      <!-- JS for Mobile Menu -->
+      <script>
+        const navToggle = document.querySelector(".nav-toggle");
+        const navLinks = document.querySelector(".nav-links");
+
+        navToggle.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+      </script>
   </body>
+
 </html>

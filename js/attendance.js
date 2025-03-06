@@ -1,9 +1,13 @@
+// Import Firebase modules
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
 // Ensure the script is loading
 console.log("attendance.js is loaded!");
 
 // Function to populate the attendance table
 function populateAttendanceTable(swimmerNames = []) {
-    console.log("populateAttendanceTable is now defined!");
+    console.log("Populating Attendance Table:", swimmerNames);
     const tableBody = document.getElementById("attendance-body");
     tableBody.innerHTML = ""; // Clear existing rows
 
@@ -21,61 +25,51 @@ function populateAttendanceTable(swimmerNames = []) {
 document.addEventListener("DOMContentLoaded", function () {
     const storedSwimmers = JSON.parse(localStorage.getItem("swimmers")) || [];
     populateAttendanceTable(storedSwimmers);
-});
+}
 
-// CSV Upload Function
-document.getElementById("uploadCsv").addEventListener("click", function () {
-    const fileInput = document.getElementById("csvFile");
-    const message = document.getElementById("uploadMessage");
 
-    if (!fileInput.files.length) {
-        message.textContent = "Please select a CSV file.";
-        message.style.color = "red";
-        return;
-    }
+    // Sync attendance in real-time
+    // Real-Time Attendance Viewer with Debugging Logs
+function syncAttendanceTable() {
+    const attendanceHistoryDiv = document.getElementById("attendanceHistory");
+    const db = getDatabase();
+    const attendanceRef = ref(db, 'attendance');
 
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+    // Listen for changes in the attendance node
+    onValue(attendanceRef, (snapshot) => {
+        console.log("🔥 onValue Triggered: Attendance data changed!");
 
-    reader.onload = function (event) {
-        const csvData = event.target.result.trim();
-        console.log("CSV Data Loaded:", csvData);
-        const rows = csvData.split("\n");
-        let swimmerNames = [];
+        const allAttendance = snapshot.val();
+        console.log("📊 Fetched Attendance Data:", allAttendance);
 
-        rows.forEach(row => {
-            let name = row.trim();
-            if (name) swimmerNames.push(name);
-        });
+        attendanceHistoryDiv.innerHTML = "<h3>Real-Time Attendance Records</h3>";
 
-        console.log("Parsed Names:", swimmerNames);
-
-        if (swimmerNames.length === 0) {
-            message.textContent = "CSV file appears empty or incorrect format.";
-            message.style.color = "red";
+        if (!allAttendance) {
+            console.log("ℹ️ No attendance records found.");
+            attendanceHistoryDiv.innerHTML += "<p>No attendance records found.</p>";
             return;
         }
 
-        // Save swimmer names in localStorage
-        localStorage.setItem("swimmers", JSON.stringify(swimmerNames));
+        // Rebuild the attendance table dynamically
+        for (const [key, value] of Object.entries(allAttendance)) {
+            let table = `<h4>${value.date} - ${value.coachID}</h4><table><tr><th>Swimmer</th><th>Present</th></tr>`;
+            value.records.forEach(record => {
+                table += `<tr>
+                            <td>${record.name}</td>
+                            <td>${record.present ? "✔️" : "❌"}</td>
+                          </tr>`;
+            });
 
-        // Update the attendance table
-        populateAttendanceTable(swimmerNames);
+            table += "</table>";
+            attendanceHistoryDiv.innerHTML += table;
+        }
+    }, (error) => {
+        console.error("❌ Error listening to attendance changes:", error);
+    });
+}
 
-        message.textContent = "Swimmers imported successfully!";
-        message.style.color = "green";
-    };
 
-    reader.onerror = function () {
-        console.error("Error reading file");
-        message.textContent = "Error reading file.";
-        message.style.color = "red";
-    };
-
-    reader.readAsText(file);
-});
-
-// Save attendance records by date
+// Save attendance records to Firebase
 document.getElementById("save-attendance").addEventListener("click", function () {
     const date = document.getElementById("date").value;
     const message = document.getElementById("attendance-message");
@@ -97,76 +91,57 @@ document.getElementById("save-attendance").addEventListener("click", function ()
         });
     });
 
-    // Retrieve existing attendance records
-    let allAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
-    allAttendance[date] = attendanceData; // Store by date
+    // Create a unique key: date-coachID (assuming each coach has a unique ID)
+    const coachID = "coach1"; // We can make this dynamic later
+    const attendanceKey = `${date}-${coachID}`;
 
-    localStorage.setItem("attendance", JSON.stringify(allAttendance));
-
-    message.textContent = "Attendance saved for " + date + "!";
-    message.style.color = "green";
+    // Save to Firebase
+    const db = getDatabase();
+    set(ref(db, 'attendance/' + attendanceKey), {
+        date: date,
+        coachID: coachID,
+        records: attendanceData,
+        timestamp: new Date().toISOString()
+    }).then(() => {
+        message.textContent = "Attendance saved for " + date + "!";
+        message.style.color = "green";
+    }).catch((error) => {
+        console.error("Error saving attendance:", error);
+        message.textContent = "Error saving attendance.";
+        message.style.color = "red";
+    });
 });
 
-// View past attendance
-document.getElementById("viewAttendance").addEventListener("click", function () {
-  const attendanceHistoryDiv = document.getElementById("attendanceHistory");
-  const allAttendance = JSON.parse(localStorage.getItem("attendance")) || {};
+// Real-Time Attendance Viewer
+function syncAttendanceTable() {
+    const attendanceHistoryDiv = document.getElementById("attendanceHistory");
+    const db = getDatabase();
+    const attendanceRef = ref(db, 'attendance');
 
-  // Get the selected date range
-  const startDate = document.getElementById("startDate").value;
-  const endDate = document.getElementById("endDate").value;
+    // Listen for changes in the attendance node
+    onValue(attendanceRef, (snapshot) => {
+        const allAttendance = snapshot.val();
+        attendanceHistoryDiv.innerHTML = "<h3>Real-Time Attendance Records</h3>";
 
-  if (!startDate && !endDate) {
-      attendanceHistoryDiv.innerHTML = "<p>Please select a date range.</p>";
-      return;
-  }
+        if (!allAttendance) {
+            attendanceHistoryDiv.innerHTML += "<p>No attendance records found.</p>";
+            return;
+        }
 
-  attendanceHistoryDiv.innerHTML = "<h3>Attendance Summary</h3>";
+        // Rebuild the attendance table dynamically
+        for (const [key, value] of Object.entries(allAttendance)) {
+            let table = `<h4>${value.date} - ${value.coachID}</h4><table><tr><th>Swimmer</th><th>Present</th></tr>`;
+            value.records.forEach(record => {
+                table += `<tr>
+                            <td>${record.name}</td>
+                            <td>${record.present ? "✔️" : "❌"}</td>
+                          </tr>`;
+            });
 
-  let totalSessions = 0;
-  let totalPresent = {};
-  let totalPossible = {};
-
-  // Initialize attendance counters
-  const storedSwimmers = JSON.parse(localStorage.getItem("swimmers")) || [];
-  storedSwimmers.forEach(name => {
-      totalPresent[name] = 0;
-      totalPossible[name] = 0;
-  });
-
-  // Loop through all attendance records
-  for (const [date, records] of Object.entries(allAttendance)) {
-      // Check if the date falls within the selected range
-      if (
-          (startDate && date < startDate) ||
-          (endDate && date > endDate)
-      ) {
-          continue;
-      }
-
-      totalSessions++;
-
-      records.forEach(record => {
-          totalPossible[record.name]++;
-          if (record.present) {
-              totalPresent[record.name]++;
-          }
-      });
-  }
-
-  // Calculate and display percentages
-  let summaryTable = `<table><tr><th>Swimmer</th><th>Attendance (%)</th></tr>`;
-  storedSwimmers.forEach(name => {
-      const percentage = totalPossible[name] > 0 
-          ? ((totalPresent[name] / totalPossible[name]) * 100).toFixed(2)
-          : 0;
-      summaryTable += `
-          <tr>
-              <td>${name}</td>
-              <td>${percentage}%</td>
-          </tr>`;
-  });
-  summaryTable += `</table>`;
-
-  attendanceHistoryDiv.innerHTML += summaryTable;
-});
+            table += "</table>";
+            attendanceHistoryDiv.innerHTML += table;
+        }
+    }, (error) => {
+        console.error("Error listening to attendance changes:", error);
+    });
+}

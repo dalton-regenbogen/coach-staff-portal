@@ -55,5 +55,30 @@
     </main>
 
     <script src="js/attendance.js"></script>
+
+    <!-- Firebase SDK as ES Modules -->
+<script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+  // Firebase Configuration (Replace with your own config)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAougKlsWUt__5xtSq2tKZFnY6dbp2oekg",
+    authDomain: "coachstaffportal.firebaseapp.com",
+    projectId: "coachstaffportal",
+    storageBucket: "coachstaffportal.firebasestorage.app",
+    messagingSenderId: "409842010087",
+    appId: "1:409842010087:web:b609e2d48b7f7f43381f42"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Import attendance.js as a module
+  import "./js/attendance.js";
+</script>
+
   </body>
 </html>
