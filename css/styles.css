@@ -17,16 +17,12 @@ body p, body a {
   font-family: 'Trebuchet MS', sans-serif;
 }
 
-
 /* Header Section */
 header {
   position: relative;
   text-align: center;
   overflow: hidden;
   height: 600px;
-
-  border: 2px solid black;
-  margin: 10px;
 }
 header::before {
   content: "";
@@ -46,14 +42,13 @@ header > * {
   z-index: 1;
 }
 
-
 /* Navbar Section */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 4px; 
-  margin: 40px 150px 30px 150px;
+  margin: 40px 130px 40px 130px;
   border-radius: 40px;
   background-color: #000000;
   border: 3px solid #ffffff;
@@ -67,7 +62,6 @@ header > * {
   color: #ffffff;
   text-decoration: none;
 }
-
 .navbar .nav-links {
   display: flex;
   list-style: none;
@@ -105,47 +99,75 @@ header > * {
   bottom: 300px;
   overflow: hidden;
   z-index: 1;
-  border-radius: 10px;
-
+  text-align: center;
 }
-.hero-header-content h1 {
+.typewriter-container {
+  display: inline-block;
+  position: relative;
+  min-height: 2.5rem;
+}
+.typewriter-container h1 {
+  display: inline;
   font-family: monospace;
   font-size: 2.5rem;
-  margin: auto;
+  margin: 0;
+  vertical-align: bottom;
   color: #000000;
-  width: max-content;
-  position: relative;
+  will-change: width;
 }
-.hero-header-content h1::before, .hero-header-content h1::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-.hero-header-content h1::before {
-  background: #ffffff;
-  animation: typewriter 3s steps(27) 1s forwards;
+.caret {
+  display: inline-block;
+  width: 0.250em;
+  height: 2.5em;
+  background: #000;
+  margin-left: 1px;
+  animation: blink 750ms steps(1) infinite;
 }
 
-.hero-header-content h1::after {
-  width: 0.125em;
-  background: #000000;
-  animation: typewriter 3s steps(27) 1s forwards, blink 750ms steps(27)  infinite;
-
+#finalMessage {
+  font-size: 3rem;
 }
 
-@keyframes typewriter {
-  to { 
-    left: 100%;
-  }
-}
+
+/* Blinking caret keyframes */
 @keyframes blink {
-  to {
-    background: transparent;
-  }
+  0%, 50% { opacity: 1; }
+  50.1%, 100% { opacity: 0; }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Login Container */
@@ -274,8 +296,7 @@ footer {
   overflow: hidden;
   height: 600px;
 
-  border: 2px solid black;
-  margin: 10px;
+
 }
 footer p, footer a {
   color: #ffffff;
