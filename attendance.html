@@ -7,78 +7,63 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <header>
-      <h1>Attendance Tracker</h1>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="staff.html">Staff Resources</a></li>
-          <li><a href="announcements.html">Announcements</a></li>
-          <li><a href="attendance.html">Attendance Tracker</a></li>
-          <li><a href="login.html">Login</a></li>
-        </ul>
-      </nav>
+    <div class="wrapper">
+      <header class="header__wrapper">
+        <nav class="navbar">
+          <a href="index.html" class="team-name">Brookside Hurricanes</a>
+            <ul class="nav-links">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="staff.html">Staff Resources</a></li>
+              <li><a href="announcements.html">Announcements</a></li>
+              <li><a href="attendance.html">Attendance Tracker</a></li>
+            </ul>
+            <button class="login"><a href="login.html">Login</a></button>
+            <button class="nav-toggle">☰</button>
+        </nav>
     </header>
-    <main>
-      <h2>Mark Attendance</h2>
-      <label for="date">Select Date</label>
-      <input type="date" id="date">
+      <main class="main-content">
+        <div class="card-attendance">
+          <h2>Mark Attendance</h2>
+          <label for="date">Select Date</label>
+          <input type="date" id="date">
 
-      <h2>Import Swimmer List</h2>
-      <input type="file" id="csvFile" accept=".csv">
-      <button id="uploadCsv">Upload</button>
-      <p id="uploadMessage"></p>
+          <h2>Import Swimmer List</h2>
+            <div>
+              <input type="file" id="csvFile" hidden>
+              <label for="csvFile" class="card-attendance__input" >Choose File</label>
+            </div>
+          <button id="uploadCsv">Upload</button>
+          <p id="uploadMessage"></p>
+        </div>
 
-      <table id="attendance-table">
-        <thead>
-          <tr>
-            <th>Swimmer Name</th>
-            <th>Attendance Status</th>
-          </tr>
-        </thead>
-        <tbody id="attendance-body">
+        <table id="attendance-table">
+          <thead>
+            <tr>
+              <th>Swimmer Name</th>
+              <th>Attendance Status</th>
+            </tr>
+          </thead>
+          <tbody id="attendance-body">
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-      <button id="save-attendance">Save Attendance</button>
-      <p id="attendance-message"></p>
+        <button id="save-attendance">Save Attendance</button>
+        <p id="attendance-message"></p>
 
-      <h3>View Past Attendance</h3>
-      <label for="startDate">Start Date:</label>
-      <input type="date" id="startDate">
-      <label for="endDate">End Date:</label>
-      <input type="date" id="endDate">
-      <button id="viewAttendance">View Attendance</button>
-      <div id="attendanceHistory"></div>
+        <h3>View Past Attendance</h3>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate">
+        <button id="viewAttendance">View Attendance</button>
+        <div id="attendanceHistory"></div>
 
-    </main>
-
-    <script src="js/attendance.js"></script>
-
-    <!-- Firebase SDK as ES Modules -->
-<script type="module">
-  // Import Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-
-  // Firebase Configuration (Replace with your own config)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAougKlsWUt__5xtSq2tKZFnY6dbp2oekg",
-    authDomain: "coachstaffportal.firebaseapp.com",
-    projectId: "coachstaffportal",
-    storageBucket: "coachstaffportal.firebasestorage.app",
-    messagingSenderId: "409842010087",
-    appId: "1:409842010087:web:b609e2d48b7f7f43381f42"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  // Import attendance.js as a module
-  import "./js/attendance.js";
-</script>
-
+      </main>
+      <footer class="footer">
+        <a class="footer__address" href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
+        <p class="footer__text">&copy; 2025 Brookside Hurricanes Coaching Staff Portal. All rights reserved.</p>
+    </footer>
+    </div>
   </body>
 </html>

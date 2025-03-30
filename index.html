@@ -7,29 +7,76 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <header>
-      <div class="wrapper">
-            <nav class="navbar">
-                <a href="index.html" class="team-name">Brookside Hurricanes</a>
-                <ul class="nav-links">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="staff.html">Staff Resources</a></li>
-                  <li><a href="announcements.html">Announcements</a></li>
-                  <li><a href="attendance.html">Attendance Tracker</a></li>
-                  <li><a href="login.html">Login</a></li>
-                </ul>
-                <button class="nav-toggle">☰</button>
-            </nav>
-        </header>
-        <main>
-          
-        </main>
-        <footer>
-          <section class="footer-address">
-            <a href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
-          </section> 
-          <p>&copy; 2025 Brookside Hurricanes Coaching Staff Portal. All rights reserved.</p>
-        </footer>
-      </div>
+    <div class="wrapper">
+      <header class="header__wrapper">
+          <nav class="navbar">
+            <a href="index.html" class="team-name">Brookside Hurricanes</a>
+              <ul class="nav-links hidden">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="staff.html">Staff Resources</a></li>
+                <li><a href="announcements.html">Announcements</a></li>
+                <li><a href="attendance.html">Attendance Tracker</a></li>
+              </ul>
+              <button class="login"><a href="login.html">Login</a></button>
+              <button class="nav-toggle">☰</button>
+              <button class="logout hidden" onclick="logout()">Logout</button>
+          </nav>
+      </header>
+      <main class="main-content">
+        <div class="hero__section">
+          <h1 class="hero__title">Driven by Our Core Values</h1>
+          <p></p>
+
+        </div>
+          <div class="cards">
+            <div class="card card-1">
+              <div class="card__icon"><i class="fas fa-bolt"></i></div>
+              <p class="card__exit"><i class="fas fa-times"></i></p>
+              <p class="card__title">Growth</p>
+              <p class="card__apply">
+                <a class="card__link" href="#">Dive in!<i class="fas fa-arrow-right"></i></a>
+              </p>
+            </div>
+            <div class="card card-2">
+              <div class="card__icon"><i class="fas fa-bolt"></i></div>
+              <p class="card__exit"><i class="fas fa-times"></i></p>
+              <p class="card__title">Communication</p>
+              <p class="card__apply">
+                <a class="card__link" href="#">Dive in! <i class="fas fa-arrow-right"></i></a>
+              </p>
+            </div>
+            <div class="card card-3">
+              <div class="card__icon"><i class="fas fa-bolt"></i></div>
+              <p class="card__exit"><i class="fas fa-times"></i></p>
+              <p class="card__title">Community</p>
+              <p class="card__apply">
+                <a class="card__link" href="#">Dive in! <i class="fas fa-arrow-right"></i></a>
+              </p>
+            </div>
+            <div class="card card-3">
+              <div class="card__icon"><i class="fas fa-bolt"></i></div>
+              <p class="card__exit"><i class="fas fa-times"></i></p>
+              <p class="card__title">Ambition</p>
+              <p class="card__apply">
+                <a class="card__link" href="#">Dive in! <i class="fas fa-arrow-right"></i></a>
+              </p>
+            </div>
+            <div class="card card-3">
+              <div class="card__icon"><i class="fas fa-bolt"></i></div>
+              <p class="card__exit"><i class="fas fa-times"></i></p>
+              <p class="card__title">Kindness</p>
+              <p class="card__apply">
+                <a class="card__link" href="#">Dive in! <i class="fas fa-arrow-right"></i></a>
+              </p>
+            </div>
+          </div>
+      </main>
+      <footer class="footer">
+          <a class="footer__address" href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
+          <p class="footer__text">&copy; 2025 Brookside Hurricanes Coaching Staff Portal. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <script src="js/main.js"></script>
   </body>
 </html>
