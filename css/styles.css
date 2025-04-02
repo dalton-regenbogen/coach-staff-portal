@@ -185,12 +185,17 @@ img, picture, svg, video, canvas {
 
 .wrapper__formCard {
   max-width: 400px;
-  width: 100%;
+  width: 90%;
 
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-
   padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .wrapper__formCard {
+    padding: 0;
+  }
 }
 
 .formCard__title {
@@ -202,6 +207,12 @@ img, picture, svg, video, canvas {
   margin-bottom: 10px;
 }
 
+@media (max-width: 768px) {
+  .formCard__title {
+    --fs-500: 1.75rem;
+  }
+}
+ 
 .wrapper__formCard .inputs {
   border: 2px solid var(--clr-primary-300);
 
