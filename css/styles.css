@@ -13,21 +13,11 @@
   --ff-heading: Impact, sans-serif;
   --ff-body: 'Trebuchet MS', sans-serif;
 
+  --fs-100: .85rem;
   --fs-300: 1rem;
-  --fs-400: 1.25rem;
-  --fs-500: 1rem;
-  --fs-600: 2.5rem;
-}
-
-/* These are for desktop */
-@media (min-width: 50em) {
-  :root {
-    --fs-100: .85rem;
-    --fs-300: 1rem;
-    --fs-400: 1.5rem;
-    --fs-500: 2rem;
-    --fs-600: 3.5rem;
-  }
+  --fs-400: 1.5rem;
+  --fs-500: 2rem;
+  --fs-600: 3.5rem;
 }
 
 /* CSS Reset */
@@ -89,6 +79,16 @@ img, picture, svg, video, canvas {
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .header {
+    padding-inline: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+
+
 /* Base CSS for the navigation and hiding elements */
 .navbar {
   display: flex;
@@ -102,6 +102,12 @@ img, picture, svg, video, canvas {
   font-family: var(--ff-heading);
   color: var(--clr-primary-100);
   text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .navbar__title {
+    --fs-500: 1.5rem;
+  }
 }
 
 .navbar__links {
@@ -169,7 +175,6 @@ img, picture, svg, video, canvas {
   justify-content: center;
   align-items: center;
   flex: 1;
-
 }
 
 /* Forn Card for login and password reset */
