@@ -291,12 +291,20 @@ img, picture, svg, video, canvas {
 
 /* footer */
 .footer {
-
   background-color: var(--clr-primary-300);
   font-family: var(--ff-body);
+  font-size: var(--fs-300);
   text-align: center;
   color: var(--clr-primary-100);
   padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding-block: 2rem;
+    padding-inline: 1rem;
+    --fs-300: .75rem;
+  }
 }
 
 .footer__address {
