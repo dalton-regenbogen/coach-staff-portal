@@ -7,27 +7,25 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <div class="wrapper">
-      <header class="header__wrapper">
+    <div class="main--wrapper">
+      <header class="header">
           <nav class="navbar">
-            <a href="index.html" class="team-name">Brookside Hurricanes</a>
-              <ul class="nav-links hidden">
+            <a href="index.html" class="navbar__title">Brookside Hurricanes</a>
+              <ul class="navbar__links hidden">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="staff.html">Staff Resources</a></li>
                 <li><a href="announcements.html">Announcements</a></li>
                 <li><a href="attendance.html">Attendance Tracker</a></li>
               </ul>
               <button class="login"><a href="login.html">Login</a></button>
-              <button class="nav-toggle">☰</button>
+              <button class="navbar__toggle">☰</button>
               <button class="logout hidden" onclick="logout()">Logout</button>
           </nav>
       </header>
-      <main class="main-content">
-        <div class="hero__section">
-          <h1 class="hero__title">Driven by Our Core Values</h1>
-          <p></p>
+      <main class="main">
 
-        </div>
+        <section class="hero">
+          <h1 class="hero__title">Driven by Our Core Values</h1>
           <div class="cards">
             <div class="card card-1">
               <div class="card__icon"><i class="fas fa-bolt"></i></div>
@@ -70,6 +68,7 @@
               </p>
             </div>
           </div>
+        </section>
       </main>
       <footer class="footer">
           <a class="footer__address" href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
@@ -77,6 +76,6 @@
       </footer>
     </div>
 
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

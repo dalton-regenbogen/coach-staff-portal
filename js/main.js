@@ -1,22 +1,49 @@
+// Import the authentication and Firestore database instances from firebase-config.js
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+
 document.addEventListener("DOMContentLoaded", function() {
-  // Check if the user is logged in
-  if (sessionStorage.getItem("loggedIn") === "true") {
-    // Show navlinks by removing the "hidden" class
-    document.querySelector('.nav-links').classList.remove('hidden');
-    
-    document.querySelector('.logout').classList.remove('hidden');
-    // Optionally, hide the login button if the user is logged in
-    document.querySelector('.login').style.display = "none";
-  } else {
-    // Ensure navlinks remain hidden if not logged in
-    document.querySelector('.nav-links').classList.add('hidden');
-  }
+  // Listen for changes in the user's sign-in state.
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      // User is logged in:
+      console.log("User is logged in:", user.email);
+      document.querySelector('.navbar__links').classList.remove('hidden');
+      document.querySelector('.login').style.display = 'none';
+      document.querySelector('.logout').classList.remove('hidden');
+
+      // Fetch the user's role document from Firestore.
+      const roleDocRef = doc(db, "userRoles", user.uid);
+      try {
+        const roleDocSnap = await getDoc(roleDocRef);
+        let role = "coach"; // default role
+        if (roleDocSnap.exists()) {
+          role = roleDocSnap.data().role;
+        }
+        console.log("User role:", role);
+        // Based on the role, you can further adjust the UI here.
+      } catch (error) {
+        console.error("Error fetching role document:", error);
+      }
+    } else {
+      // User is not logged in:
+      console.log("No user is logged in.");
+      document.querySelector('.navbar__links').classList.add('hidden');
+      document.querySelector('.login').style.display = 'block';
+      document.querySelector('.logout').classList.add('hidden');
+    }
+  });
 });
 
-// Add a function to log out
-function logout() {
-  sessionStorage.removeItem("loggedIn");
-  sessionStorage.removeItem("username");
-  // Reload the page or redirect to login page
-  window.location.href = "login.html";
-}
+// Attach the logout function to the global window object
+window.logout = function() {
+  signOut(auth)
+    .then(() => {
+      console.log("User signed out successfully.");
+      window.location.href = "login.html";
+    })
+    .catch((error) => {
+      console.error("Error signing out:", error);
+    });
+};
