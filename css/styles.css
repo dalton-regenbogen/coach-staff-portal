@@ -15,11 +15,11 @@
 
   --fs-300: 1rem;
   --fs-400: 1.25rem;
-  --fs-500: 1.5rem;
+  --fs-500: 1rem;
   --fs-600: 2.5rem;
 }
 
-
+/* These are for desktop */
 @media (min-width: 50em) {
   :root {
     --fs-100: .85rem;
@@ -76,21 +76,25 @@ img, picture, svg, video, canvas {
 .header {
   padding-block: 1.75rem;
   background-color: var(--clr-primary-300);
+  padding-inline: 5rem;
+  display: flex;
+  justify-content: space-between;
+}
 
+.header--minimal {
+  background-color: var(--clr-primary-300);
+  padding-block: 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Base CSS for the navigation and hiding elements */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding-inline: 5rem;
-
-}
-
-.navbar--minimal {
-display: flex;
-justify-content: center;
+  gap: 1rem;
 }
 
 .navbar__title {
@@ -167,6 +171,7 @@ justify-content: center;
   flex: 1;
 
 }
+
 /* Forn Card for login and password reset */
 .material-icons.account__circle, .material-icons.lock {
   color: var(--clr-primary-300);

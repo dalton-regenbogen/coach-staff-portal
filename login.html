@@ -9,10 +9,8 @@
   </head>
   <body>
     <div class="main--wrapper">
-      <header class="header">
-          <nav class="navbar--minimal">
-            <a href="index.html" class="navbar__title">Brookside Hurricanes</a>
-          </nav>
+      <header class="header--minimal">
+          <a href="index.html" class="navbar__title">Brookside Hurricanes</a>
       </header>
       <main class="main">
 
@@ -21,11 +19,11 @@
             <h1 class="formCard__title">Login</h1>
             <form id="loginForm">
               <div class="inputs">
-                <input type="text" id="email" placeholder="Username" required>
-                <label for="userame"><i class="material-icons account__circle">account_circle</i></label>
+                <input type="text" id="email" placeholder="Username" required autocomplete="username">
+                <label for="username"><i class="material-icons account__circle">account_circle</i></label>
               </div>
               <div class="inputs">
-                <input type="password" id="password" placeholder="Password" required>
+                <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
                 <label for="password"><i class="material-icons lock">lock</i></label>
               </div>
               <div class="rem__for">
