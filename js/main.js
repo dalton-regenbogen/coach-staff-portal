@@ -18,10 +18,21 @@ document.addEventListener("DOMContentLoaded", function() {
       try {
         const roleDocSnap = await getDoc(roleDocRef);
         let role = "coach"; // default role
+        let temporaryPassword = false; // defualt flag
         if (roleDocSnap.exists()) {
-          role = roleDocSnap.data().role;
+          const data = roleDocSnap.data();
+          role = data.role;
+          temporaryPassword = data.temporaryPassword || false;
         }
         console.log("User role:", role);
+        console.log("temporaryPassword Flag:", temporaryPassword);
+
+         // If the temporaryPassword flag is true, force password change
+        if (temporaryPassword) {
+          console.log("Redirecting to change-password page...");
+          window.location.href = "change-password.html";
+          return;  // Stop further processing.
+        }
         // Based on the role, you can further adjust the UI here.
       } catch (error) {
         console.error("Error fetching role document:", error);
