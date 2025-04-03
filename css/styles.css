@@ -64,11 +64,11 @@ img, picture, svg, video, canvas {
 
 /* Header */
 .header {
-  padding-block: 1.75rem;
-  background-color: var(--clr-primary-300);
-  padding-inline: 5rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem 5rem;
+  background-color: var(--clr-primary-300);
 }
 
 .header--minimal {
@@ -83,13 +83,10 @@ img, picture, svg, video, canvas {
   .header {
     padding-inline: 1rem;
     flex-direction: column;
-    text-align: center;
     gap: 1rem;
   }
 }
 
-
-/* Base CSS for the navigation and hiding elements */
 .navbar {
   display: flex;
   justify-content: center;
@@ -112,9 +109,12 @@ img, picture, svg, video, canvas {
 
 .navbar__links {
   display: flex;
+  justify-content: center;
+  align-items: center;
   list-style: none;
   gap: 1rem;
 }
+
 
 .navbar__links a {
   font-family: var(--ff-body);
@@ -155,8 +155,6 @@ img, picture, svg, video, canvas {
 
 .navbar__toggle {
   display: none;
-  background: none;
-  border: none;
 }
 
 /* Class to hide elements */
