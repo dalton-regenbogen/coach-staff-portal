@@ -3,36 +3,182 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BHST Coach Portal</title>
+    <title>BHST Coaching Portal</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="main--wrapper">
-      <header class="header">
-          <a href="index.html" class="navbar__title">Brookside Hurricanes</a>
-          <nav class="navbar">
-              <ul class="navbar__links hidden">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="staff.html">Staff Resources</a></li>
-                <li><a href="announcements.html">Announcements</a></li>
-                <li><a href="attendance.html">Attendance Tracker</a></li>
-              </ul>
-              <button class="login"><a href="login.html">Login</a></button>
-              <button class="navbar__toggle active">☰</button>
-              <button class="logout hidden" onclick="logout()">Logout</button>
+      <header>
+        <div class="wrapper">
+          <nav class="navBar">
+            <ul class="navList-leftSide">
+              <li><a class="navLink" href="#">THE BRAND</a></li>
+              <li><a class="navLink" href="#">FAMILY</a></li>
+              <li><a class="navLink" href="#">RESOURCES</a></li>
+              <li><a class="navLink" href="#">PRACTICES</a></li>
+            </ul>
+            <div class="navLogo"><a href="#index"><img src="/assets/website-logo.svg"></a></div>
+            <div class="navList-rightSide">
+              <a class="navIcon" href="#"><i class="fa-regular fa-square-check"></i></a>
+              <a class="navIcon" href="#"><i class="fa-regular fa-calendar-day"></i></a>
+              <a class="navIcon" href="#"><i class="fa-regular fa-circle-user"></i></a>
+            </div>
           </nav>
+        </div>
       </header>
-      <main class="main">
-        <section class="hero">
-
-        </section>
-      </main>
-      <footer class="footer">
-          <a class="footer__address" href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
-          <p>&copy; 2025 Brookside Hurricanes Coaching Portal</p>
-          <p>All rights reserved.</p>
+      <div class="wrapper">
+        <main>
+          <section class="heroSection">
+            <h1 class="heroTitle">Build More Than Swimmers—Build Legacies.</h1>
+            <div class="heroContent">
+              <p>Every stroke, every lesson, every word matters.</p>
+              <p>You're not just a coach—you're a mentor, leader, and role model.</p>
+              <p> Make your impact count.</p>
+          </div>
+            <button class="heroCTA">COACH LOGIN</button>
+          </section>
+      </div>
+          <section class="bentoBox">
+            <div class="wrapper">
+              <h2 class="bentoTitle">Our Team, Our Legacy</h2>
+              <div class="bentoContainer">
+                <div class="bentoCard bentoOne">
+                  <div>
+                    <p class="bentoOne-big">17</p>
+                    <p class="bentoOne-little">UNFORGETTABLE SUMMERS</p>
+                  </div>
+                  <div class="bentoCard-title">
+                    <h3>Years Together</h3>
+                  </div>
+                </div>
+                <div class="bentoCard bentoTwo">
+                  <div class="bentoCard-title">
+                    <h3>Athletes Inspired</h3>
+                  </div>
+                  <div>
+                    <p class="bentoTwo-big">1,000+</p>
+                    <p class="bentoTwo-little">& Counting</p>
+                  </div>
+                </div>
+                <div class="bentoCard bentoThree">
+                  <p class="bentoThree-big">200+</p>
+                  <div class="bentoCard-title">
+                    <h3>Meets & Memories</h3>
+                  </div>
+                </div>
+                <div class="bentoCard bentoFour">
+                  <div class="bentoCard-title">
+                    <h3>Coaching Legacies</h3>
+                  </div>
+                  <div>
+                    <p class="bentoFour-big">40+</p>
+                    <p class="bentoFour-little">Coaching Journeys Started</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="coreValue-container">
+            <h2>The Core of BHST Coaching Excellence</h2>
+            <div class="cardContainer-one">
+              <div class="coreValue-Card cardOne">
+                <h3>GROWTH</h3>
+                <p>"Always learning, always improving."</p>
+                <a class="coreValue-link" href="#">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
+                <i class="fa-solid fa-x"></i>
+              </div>
+              <div class="coreValue-Card cardTwo">
+                <h3>KINDNESS</h3>
+                <p>"Building a supportive and empathetic culture."</p>
+                <a class="coreValue-link" href="#">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
+                <i class="fa-solid fa-x"></i>
+              </div>
+            </div>
+            <div class="cardContainer-two">
+              <div class="coreValue-Card cardThree">
+                <h3>COMMUNICATION</h3>
+                <p>"Promoting clarity, openness, and collaboration."</p>
+                <a class="coreValue-link" href="#">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
+                <i class="fa-solid fa-x"></i>
+              </div>
+              <div class="coreValue-Card cardFour">
+                <h3>COMMUNITY</h3>
+                <p>"Creating a united, supportive family."</p>
+                <a class="coreValue-link" href="#">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
+                <i class="fa-solid fa-x"></i>
+              </div>
+            </div>
+            <div class="cardContainer-three">
+              <div class="coreValue-Card cardFive">
+                <h3>AMBITION</h3>
+                <p>"Fueling relentless pursuit of goals."</p>
+                <a class="coreValue-link" href="#">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
+                <i class="fa-solid fa-x"></i>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+      <footer >
+        <div class="wrapper">
+          <div class="footerGrid">
+            <div class="footerSection footerOne">
+              <div class="footerNav-linkLeft">
+                <ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">THE BRAND</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">FAMILY</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">RESOURCES</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">PRACTICES</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+            </div>
+            <div class="footerSection footerTwo">
+              <div class="footerLogo"><a href="#index"><img src="/assets/website-logo-white.png"></a></div>
+              <address>7197 Riley Rd Warrenton, VA 20187</address>
+              <p>2025 Brookside Hurricanes Coaching Portal. All Rights Reserved.</p>
+            </div>
+            <div class="footerSection footerThree">
+              <a href="#">LOGIN</a>
+              <a href="#">ATTENDANCE TRACKER</a>
+              <a href="#">CALENDAR</a>
+            </div>
+          </div>
+        </div>
       </footer>
-    </div>
-    <script type="module" src="js/main.js"></script>
+    <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
+    <script>
+      const header = document.querySelector('header');
+    
+      window.addEventListener('scroll', () => {
+        // if we've moved down even 1 px, add the class; otherwise remove it
+        header.classList.toggle('scrolled', window.scrollY > 0);
+      });
+    </script>
   </body>
 </html>

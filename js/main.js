@@ -59,4 +59,3 @@ window.logout = function() {
     });
 };
 
-document.querySelector(".navbar__toggle").addEventListener("click", () => { const navLinks = document.querySelector(".navbar__links"); navLinks.classList.toggle("active"); });
