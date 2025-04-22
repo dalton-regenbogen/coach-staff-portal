@@ -31,7 +31,7 @@
       <div class="wrapper">
         <main>
           <section class="heroSection">
-            <h1 class="heroTitle">Build More Than Swimmers—Build Legacies.</h1>
+            <h1 class="heroTitle">Build More Than Swimmers<span class="spanOne">. </span><span class="spanTwo">—</span>Build Legacies.</h1>
             <div class="heroContent">
               <p>Every stroke, every lesson, every word matters.</p>
               <p>You're not just a coach—you're a mentor, leader, and role model.</p>
@@ -173,12 +173,23 @@
       </footer>
     <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
     <script>
-      const header = document.querySelector('header');
-    
-      window.addEventListener('scroll', () => {
-        // if we've moved down even 1 px, add the class; otherwise remove it
-        header.classList.toggle('scrolled', window.scrollY > 0);
+      document.addEventListener('DOMContentLoaded', () => {
+        const header   = document.querySelector('header');
+        const scroller = document.scrollingElement || document.documentElement; // body on iOS
+      
+        function flipHeader() {
+          header.classList.toggle('scrolled', (scroller.scrollTop || window.scrollY) > 0);
+        }
+      
+        /* ❶ listen on whichever element actually scrolls */
+        scroller.addEventListener('scroll', flipHeader, { passive: true });
+      
+        /* ❷ also listen on window in case some browsers only bubble there */
+        window.addEventListener('scroll', flipHeader, { passive: true });
+      
+        /* ❸ run once in case we load mid‑page */
+        flipHeader();
       });
-    </script>
+      </script>      
   </body>
 </html>

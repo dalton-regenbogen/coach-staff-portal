@@ -34,7 +34,7 @@ html:focus-within {
 }
 
 html, body {
-  height: 100%;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -73,6 +73,7 @@ header {
 
 header.scrolled {
   background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
 }
 
 header:hover {
@@ -89,6 +90,7 @@ header:hover {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
+    padding-block-end: .5rem;
   }
 }
 
@@ -180,6 +182,7 @@ header:hover {
     grid-column-end: 3;
     justify-content: center;
     padding: 0;
+    gap: 1rem;
   }
 
   .navList-rightSide i {
@@ -202,23 +205,40 @@ header:hover {
   font-weight: 800;
 }
 
+.spanOne {
+  display: none;
+}
+
+.spanTwo {
+  display: inline;
+}
+
 .heroContent, .heroCTA {
   font-size: 1.25rem;
   font-weight: 600;
+}
+
+.heroContent {
+  margin-block-end: 3rem;
 }
 
 @media (max-width: 478px) {
   .heroTitle {
     font-size: 1.9rem;
   }
-  
+
+  .spanOne {
+    display: inline;
+  }
+
+  .spanTwo {
+    display: none;
+  }
+
   .heroContent {
     font-size: .85rem;
+    margin-block-end: 2rem;
   }
-}
-
-.heroContent {
-  margin-block-end: 3rem;
 }
 
 .heroCTA {
@@ -233,6 +253,14 @@ header:hover {
     background-color ease 0.2s,
     color ease 0.2s,
     border ease 0.2s;
+}
+
+@media (max-width: 478px) {
+  .heroCTA {
+    padding-block: .4rem;
+    padding-inline: 1.75rem;
+    font-size: .9rem;
+  }
 }
 
 .heroCTA:hover {
@@ -257,6 +285,16 @@ header:hover {
   color: var(--clr-primary-100);
 }
 
+@media (max-width: 478px) {
+  .bentoBox {
+    padding: 3rem 0 8rem 0;
+  }
+
+  .bentoTitle {
+    font-size: 1.75rem;
+  }
+}
+
 .bentoContainer {
   margin: 0 auto;
   max-width: 975px;
@@ -277,6 +315,16 @@ header:hover {
 
 .bentoContainer:hover {
   box-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 478px) {
+  .bentoContainer {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 2rem;
+  }
 }
 
 .bentoCard {
@@ -302,6 +350,12 @@ header:hover {
     font-weight: 700;
     align-content: center;
     border: none;
+}
+
+@media (max-width: 478px) {
+  .bentoCard-title {
+    font-size: 1.4rem;
+  }
 }
 
 .bentoOne {
@@ -330,6 +384,23 @@ header:hover {
   border-bottom-left-radius: 10px;
 }
 
+@media (max-width: 478px) {
+  .bentoOne {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+
+  .bentoOne-big {
+    font-size: 7rem;
+  }
+  
+  .bentoOne-little {
+    font-size: 1rem;
+  }
+}
+
 .bentoTwo {
   grid-column-start: 2;
   grid-column-end: 4;
@@ -356,11 +427,30 @@ header:hover {
   border-top-left-radius: 10px;
 }
 
+@media (max-width: 478px) {
+  .bentoTwo {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+
+  .bentoTwo-big {
+    font-size: 3.75rem;
+  }
+  
+  .bentoTwo-little {
+    font-size: 3rem;
+    padding-block-end: .5rem;
+  }
+}
+
 .bentoThree {
   grid-column-start: 1;
   grid-column-end: 3;
   background-color: var(--clr-primary-300);
 }
+
 .bentoThree-big {
   font-size: 7.25rem;
   font-weight: 900;
@@ -372,6 +462,29 @@ header:hover {
   color: var(--clr-primary-300);
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+@media (max-width: 478px) {
+  .bentoThree {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    background-color: var(--clr-primary-100);
+  }
+
+  .bentoThree-big {
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--clr-primary-300);
+  }
+  
+  .bentoThree .bentoCard-title {
+    background-color: var(--clr-primary-300);
+    color: var(--clr-primary-100);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
 }
 
 .bentoFour {
@@ -398,8 +511,33 @@ header:hover {
 .bentoFour .bentoCard-title {
   background-color: var(--clr-primary-300);
   color: var(--clr-primary-100);
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+}
+
+@media (max-width: 478px) {
+  .bentoFour {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    background-color: var(--clr-primary-300);
+  }
+
+  .bentoFour-big {
+    font-size: 5rem;
+    color: var(--clr-primary-100);
+    padding-block-start: 1.8rem;
+  }
+  
+  .bentoFour-little {
+    font-size: 1.1rem;
+    color: var(--clr-primary-100);
+    padding-block-end: 2rem;
+  }
+  
+  .bentoFour .bentoCard-title {
+    background-color: var(--clr-primary-100);
+    color: var(--clr-primary-300);
+  }
 }
 
 /* Core Value Cards */
