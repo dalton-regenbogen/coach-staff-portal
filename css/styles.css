@@ -207,6 +207,16 @@ header:hover {
   font-weight: 600;
 }
 
+@media (max-width: 478px) {
+  .heroTitle {
+    font-size: 1.9rem;
+  }
+  
+  .heroContent {
+    font-size: .85rem;
+  }
+}
+
 .heroContent {
   margin-block-end: 3rem;
 }
