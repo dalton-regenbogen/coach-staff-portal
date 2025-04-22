@@ -157,7 +157,6 @@ header:hover {
     height: 90px;
     grid-column-start: 1;
     grid-column-end: 2;
-    border: 2px solid red;
     margin: 0 auto;
   }
 }
@@ -177,7 +176,6 @@ header:hover {
 
 @media (max-width: 478px) {
   .navList-rightSide {
-    border: 2px solid red;
     grid-column-start: 2;
     grid-column-end: 3;
     justify-content: center;
@@ -185,7 +183,6 @@ header:hover {
   }
 
   .navList-rightSide i {
-    border: 2px solid red;
     font-size: 1rem;
   }
 }
