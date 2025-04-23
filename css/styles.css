@@ -390,14 +390,21 @@ header:hover {
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 2;
+    background-color: var(--clr-primary-300);
+  }
+  .bentoOne .bentoCard-title {
+    background-color: var(--clr-primary-100);
+    color: var(--clr-primary-300);
   }
 
   .bentoOne-big {
     font-size: 7rem;
+    color: var(--clr-primary-100);
   }
   
   .bentoOne-little {
     font-size: 1rem;
+    color: var(--clr-primary-100);
   }
 }
 
@@ -470,18 +477,18 @@ header:hover {
     grid-column-end: 2;
     grid-row-start: 3;
     grid-row-end: 4;
-    background-color: var(--clr-primary-100);
+    background-color: var(--clr-primary-300);
   }
 
   .bentoThree-big {
     font-size: 6rem;
     font-weight: 900;
-    color: var(--clr-primary-300);
+    color: var(--clr-primary-100);
   }
   
   .bentoThree .bentoCard-title {
-    background-color: var(--clr-primary-300);
-    color: var(--clr-primary-100);
+    background-color: var(--clr-primary-100);
+    color: var(--clr-primary-300);
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
   }
@@ -555,6 +562,18 @@ header:hover {
   padding-block-end: 1.5rem;
 }
 
+@media (max-width: 478px) {
+  .coreValue-container {
+    padding-inline: 1rem;
+    padding-block-start: 5rem;
+    padding-block-end: 10rem;
+  }
+
+  .coreValue-container h2 {
+    font-size: 1.75rem;
+  }
+}
+
 .coreValue-Card {
     padding: 1rem;
     background-color: var(--clr-primary-300);
@@ -575,8 +594,21 @@ header:hover {
   justify-content: center;
 }
 
+@media (max-width: 478px) {
+  .cardContainer-one, .cardContainer-two, .cardContainer-three {
+    display: flex;
+    flex-direction: column;
+    gap: rem;
+    justify-content: center;
+  }
+
+  .coreValue-Card {
+    width: 100%;
+  }
+}
+
 .coreValue-Card h3 {
-  font-size: 600;
+  font-weight: 600;
   font-size: 1.125rem;
   padding-block-end: 1rem;
 }
@@ -590,9 +622,17 @@ header:hover {
 .coreValue-link {
   text-decoration: none;
   position: relative;
-
 }
 
+@media (max-width: 478px) {
+  .coreValue-Card h3 {
+    font-size: 1rem;
+  }
+
+  .coreValue-Card p {
+    font-size: 1rem;
+  }
+}
 .coreValue-link::after {
   content: '';
   position: absolute;
@@ -687,12 +727,48 @@ footer {
   align-items: center;
 }
 
-
 .footerThree a {
   text-decoration: none;
   color: var(--clr-primary-100);
   font-size: 1rem;
   font-weight: 800;
+}
+
+@media (max-width: 478px) {
+  .footerGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .footerOne {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-block: 1rem;
+  }
+
+  .footerNav-linkLeft-title {
+    font-size: .9rem;
+    text-align: center;
+  }
+
+  .footerNav-linkLeft-subtitle {
+    text-align: center;
+  }
+
+  .footerTwo {
+    grid-row-start: 3;
+  }
+
+  .footerThree {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding-block-start: 2rem;
+    padding-block-end: 1rem;
+  }
+
+
 }
 
 
