@@ -941,7 +941,6 @@ footer {
 
 
 .mvSection, .cvSection {
-
   padding-block-start:  7.5rem;
   font-family: var(--ff);
   color: var(--clr-primary-300);
@@ -952,20 +951,24 @@ footer {
   background-repeat: space repeat;
 }
 
+.mvTitle-container {
+  padding-block-end: 2rem;
+}
+
 .mvSection h2, .cvSection h2 {
   text-align: center;
   font-size: 2.5rem;
   font-weight: 700;
 }
 
-.mvSection > p {
+.mvTitle-container > p {
   font-size: 1.15rem;
   font-weight: 700;
   text-align: center;
-  margin: 0 auto;
+  margin-inline: auto;
+  margin-block-start: .5rem;
   width: 50%;
   line-height: 1.3;
-  padding-block: .5rem 2rem;
 }
 
 .mvCard-container {
