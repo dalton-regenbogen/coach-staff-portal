@@ -5,28 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BHST Staff Portal</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="main--wrapper">
-      <header class="header--minimal">
-          <a href="index.html" class="navbar__title">Brookside Hurricanes</a>
-      </header>
-      <main class="main">
-
-        <section class="form-container">
-          <div class="wrapper__formCard">
-            <h1 class="formCard__title">Login</h1>
+    <header class="headerMinimal">
+      <div class="wrapper">
+        <nav class="navBar-minimal">
+          <div class="navLogo"><a href="index.html"><img src="/assets/website-logo.svg"></a></div>
+        </nav>
+      </div>
+    </header>
+    <div class="wrapper">
+      <main>
+        <section class="formCard">
             <form id="loginForm">
-              <div class="inputs">
+              <p>Welcome, <span>sign in to continue</span></p>
+              <div class="loginForm-input">
                 <input type="text" id="email" placeholder="Username" required autocomplete="username">
-                <label for="username"><i class="material-icons account__circle">account_circle</i></label>
               </div>
-              <div class="inputs">
+              <div class="loginForm-input">
                 <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
-                <label for="password"><i class="material-icons lock">lock</i></label>
               </div>
-              <div class="rem__for">
+              <div class="remFor">
                 <div class="remember">
                   <input type="checkbox" id="remember__box">
                   <label for="remember__box">Remember Me</label>
@@ -35,19 +37,14 @@
                   <a href="" id="forgetPassword">Forget Password?</a>
                 </div>
               </div>
-              <button class="account__login">Login</button>
+              <button class="accountLogin">Ready, GO!</button>
               <p class="loginForm__errorMessage"></p>
             </form>
-          </div>
         </section>
-
       </main>
-      <footer class="footer">
-        <a class="footer__address" href="https://www.google.com/maps/place/7197+Riley+Rd,+Warrenton,+VA+20187/@38.7398015,-77.7134862,17z/data=!3m1!4b1!4m6!3m5!1s0x89b6636e20ad582b:0x80d1837332d83eb6!8m2!3d38.7398015!4d-77.7109113!16s%2Fg%2F11c5dq102f?entry=ttu&g_ep=EgoyMDI1MDMwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">7197 Riley Rd Warrenton, VA 20187</a>
-        <p>&copy; 2025 Brookside Hurricanes Coaching Portal</p>
-        <p>All rights reserved.</p>
-    </footer>
-    </div>
+    </div> 
     <script type="module" src="js/login.js"></script>
+    <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
+      </script> 
   </body> 
 </html>
