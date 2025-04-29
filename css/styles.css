@@ -48,10 +48,10 @@ img, picture, svg, video, canvas {
   display: block;
 }
 
-/* Utility Classes */
+/* Utility Classes 1245 */
 
 .wrapper {
-  max-width: 1245px;
+  max-width: 85%;
   margin: 0 auto;
 }
 
@@ -892,6 +892,10 @@ footer {
 }
 
 @media (max-width: 478px) {
+  #loginForm {
+    padding: 1.25rem;
+  }
+  
   .formCard p {
     font-size: 1.75rem;
     line-height: 1.2;
@@ -903,7 +907,7 @@ footer {
   }
   
   .loginForm-input {
-    width: 200px
+    width: 250px;
   }
   
   .loginForm-input input {
@@ -960,7 +964,7 @@ footer {
 @media (max-width: 478px) {
   .titleSection {
     padding-block-end: 2rem;
-    height: 100px;
+    height: 150px;
   }
 
   .titleSection h1 {
@@ -1079,8 +1083,7 @@ footer {
   width: 60%;
   margin: 0 auto;
   display: grid;
-  gap: 2rem;
-  
+  gap: 5rem;
 }
 
 .cvSection {
@@ -1096,8 +1099,8 @@ footer {
   }
 
   .mvTitle-container > p {
-    font-size: .9rem;
-    width: 80%;
+    font-size: 1rem;
+    width: 100%;
     line-height: 1.2;
   }
 
@@ -1122,12 +1125,13 @@ footer {
   }
 
   .cvSection > p {
-    font-size: .9rem;
-    width: 80%;
+    font-size: 1rem;
+    width: 100%;
     line-height: 1.2;  }
 
   .cvCard-container {
     width: 90%;
+    gap: 4rem;
   }
 }
 
