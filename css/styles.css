@@ -1170,18 +1170,7 @@ footer {
   padding-block: 1.5rem;
 }
 
-.table-wrap {
-    max-height: 70vh;       /* table area gets its own scrollbar */
-    overflow-y: auto;
-    position: relative;     /* establishes containing block for sticky */
-}
 
-.table-wrap thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background:#fff;
-}
 
 .attendanceTable {
   width: 25rem;
@@ -1308,4 +1297,19 @@ thead th {
   position: sticky;
   top: 0;                 /* sticks to top of viewport */
   z-index: 2;             /* above body rows */   
+}
+
+@media (max-width: 479px) {
+  .table-wrap {
+    max-height: 70vh;       /* table area gets its own scrollbar */
+    overflow-y: auto;
+    position: relative;     /* establishes containing block for sticky */
+  }
+
+  .table-wrap thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background:#fff;
+  }
 }

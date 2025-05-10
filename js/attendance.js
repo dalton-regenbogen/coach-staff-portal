@@ -203,64 +203,7 @@ function attachChipListeners() {
         cycleStatus(chip);
       }
     };
-    attachDragHandlers(chip); 
   });
-}
-
-/* ---------- Touch / Drag to set status ---------- */
-function attachDragHandlers(chip) {
-  let startX = null;
-
-  function handleStart(e) {
-    startX = (e.touches ? e.touches[0].clientX : e.clientX);
-  }
-
-  function handleMove(e) {
-    if (startX === null) return;
-    const x = (e.touches ? e.touches[0].clientX : e.clientX);
-    const delta = x - startX;
-
-    /* width of the track = 3.5rem ≈ 56px
-       Divide into thirds: -∞..-18px = Present, -18..18 = Unsure, 18..∞ = Absent */
-    if (delta < -18)  preview('present');
-    else if (delta > 18) preview('absent');
-    else                preview('unsure');
-  }
-
-  function handleEnd() {
-    startX = null;
-    // Commit the class we previewed
-    commitPreview();
-  }
-
-  /* helper: temporarily add preview class */
-  let previewState = null;
-  function preview(state) {
-    if (state === previewState) return;
-    chip.classList.remove('present','unsure','absent');
-    chip.classList.add(state);
-    previewState = state;
-  }
-
-  function commitPreview() {
-    if (previewState) {
-      cycleStatus(chip);                   // will advance once
-      // move to chosen state directly (overwrite the extra cycle)
-      ['present','unsure','absent'].forEach(s => chip.classList.toggle(s, s === previewState));
-      // refresh label text
-      const lbl = chip.querySelector('.knob-label');
-      lbl.textContent = previewState === 'present' ? '✔'
-                       : previewState === 'absent'  ? '✖'
-                       : '?';
-    }
-  }
-
-  chip.addEventListener('touchstart', handleStart);
-  chip.addEventListener('touchmove',  handleMove);
-  chip.addEventListener('touchend',   handleEnd);
-  chip.addEventListener('mousedown',  handleStart);
-  chip.addEventListener('mousemove',  handleMove);
-  chip.addEventListener('mouseup',    handleEnd);
 }
 
 
