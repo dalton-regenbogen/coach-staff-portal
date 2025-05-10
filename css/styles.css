@@ -1137,9 +1137,8 @@ footer {
 }
 
 /* Attendance Page */
-
 .attendanceSection {
-  padding-block-start: 120px; 
+  padding-block-start: 12rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1170,11 +1169,25 @@ footer {
   padding-block: 1.5rem;
 }
 
+#rosterUpload {
+  cursor: pointer;
+}
 
+@media (max-width: 478px) {
+  .filters {
+    width: 90%;
+    font-size: 1rem;
+    padding-block: 1rem;
+  }
+
+  .filters 
+}
 
 .attendanceTable {
   width: 25rem;
   border-collapse: collapse;
+
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,.25);
 }
 
 .attendanceTable thead {
@@ -1197,12 +1210,11 @@ footer {
   border-top-right-radius: 5px;
 }
 
+tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
 tbody tr:nth-child(even) { 
   background:#eef0f1; 
-}
-
-tbody tr:hover { 
-  background:#f3f4f6; 
 }
 
 td { 
@@ -1299,7 +1311,7 @@ thead th {
   z-index: 2;             /* above body rows */   
 }
 
-@media (max-width: 479px) {
+@media (max-width: 9px) {
   .table-wrap {
     max-height: 70vh;       /* table area gets its own scrollbar */
     overflow-y: auto;

@@ -35,11 +35,6 @@
       
       <div class="attendanceSection">
 
-        <label id="rosterUpload" style="cursor:pointer;font-size:.9rem;color:#0369a1;">
-          Upload roster CSV
-          <input type="file" id="csvInput" accept=".csv" style="display:none">
-        </label>
-
         <section id="filters" class="filters">
           <label>
             Date:
@@ -58,6 +53,12 @@
               <option value="15-18">15-18</option>
             </select>
           </label>
+
+          <label id="rosterUpload">
+            Upload Roster (.csv)
+            <input type="file" id="csvInput" accept=".csv" style="display:none">
+          </label>
+          
         </section>
         <div class="table-wrap">
           <table id="rosterTable" class="attendanceTable">

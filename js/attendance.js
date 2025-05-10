@@ -185,8 +185,8 @@ function applyAttendanceObject(map) {
     chip.classList.add(status);
 
     /* update label char without wiping the knob element */
-    if (status === 'present')      label.textContent = 'Present';
-    else if (status === 'absent')  label.textContent = 'Absent';
+    if (status === 'present')      label.textContent = '';
+    else if (status === 'absent')  label.textContent = '';
     else                           label.textContent = '';
   });
 }
