@@ -96,10 +96,16 @@ function buildRosterFromArray(swimmers) {
     nameTd.textContent = name;
 
     const statusTd = document.createElement('td');
+    statusTd.className = 'col-status';
     const chip = document.createElement('span');
-    chip.className = 'chip unsure';
+    chip.className = 'chip toggle unsure';
     chip.setAttribute('role', 'button');
-    chip.textContent = 'Unsure';
+
+    const lbl = document.createElement('span');
+    lbl.className = 'knob-label';
+    lbl.textContent = '?';          // initial (unsure)
+    chip.appendChild(lbl);
+
     statusTd.appendChild(chip);
 
     tr.appendChild(nameTd);
@@ -171,11 +177,17 @@ function applyAttendanceObject(map) {
   document.querySelectorAll('#rosterTable tbody tr').forEach(row => {
     const name   = row.cells[0].textContent.trim();
     const chip   = row.querySelector('.chip');
+    const label  = chip.querySelector('.knob-label');
     const status = map[name] || 'unsure';
 
-    chip.classList.remove('present','absent','unsure');
+    /* swap classes to move knob & recolor */
+    chip.classList.remove('present', 'unsure', 'absent');
     chip.classList.add(status);
-    chip.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+
+    /* update label char without wiping the knob element */
+    if (status === 'present')      label.textContent = 'Present';
+    else if (status === 'absent')  label.textContent = 'Absent';
+    else                           label.textContent = '';
   });
 }
 
@@ -191,17 +203,80 @@ function attachChipListeners() {
         cycleStatus(chip);
       }
     };
+    attachDragHandlers(chip); 
   });
 }
+
+/* ---------- Touch / Drag to set status ---------- */
+function attachDragHandlers(chip) {
+  let startX = null;
+
+  function handleStart(e) {
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+  }
+
+  function handleMove(e) {
+    if (startX === null) return;
+    const x = (e.touches ? e.touches[0].clientX : e.clientX);
+    const delta = x - startX;
+
+    /* width of the track = 3.5rem ≈ 56px
+       Divide into thirds: -∞..-18px = Present, -18..18 = Unsure, 18..∞ = Absent */
+    if (delta < -18)  preview('present');
+    else if (delta > 18) preview('absent');
+    else                preview('unsure');
+  }
+
+  function handleEnd() {
+    startX = null;
+    // Commit the class we previewed
+    commitPreview();
+  }
+
+  /* helper: temporarily add preview class */
+  let previewState = null;
+  function preview(state) {
+    if (state === previewState) return;
+    chip.classList.remove('present','unsure','absent');
+    chip.classList.add(state);
+    previewState = state;
+  }
+
+  function commitPreview() {
+    if (previewState) {
+      cycleStatus(chip);                   // will advance once
+      // move to chosen state directly (overwrite the extra cycle)
+      ['present','unsure','absent'].forEach(s => chip.classList.toggle(s, s === previewState));
+      // refresh label text
+      const lbl = chip.querySelector('.knob-label');
+      lbl.textContent = previewState === 'present' ? '✔'
+                       : previewState === 'absent'  ? '✖'
+                       : '?';
+    }
+  }
+
+  chip.addEventListener('touchstart', handleStart);
+  chip.addEventListener('touchmove',  handleMove);
+  chip.addEventListener('touchend',   handleEnd);
+  chip.addEventListener('mousedown',  handleStart);
+  chip.addEventListener('mousemove',  handleMove);
+  chip.addEventListener('mouseup',    handleEnd);
+}
+
 
 function cycleStatus(chip) {
   const states = ['present', 'unsure', 'absent'];
   const current = states.findIndex(s => chip.classList.contains(s));
   const next    = states[(current + 1) % states.length];
+  
+  const label = chip.querySelector('.knob-label');
+  if (next === 'present') label.textContent = '✔';
+  else if (next === 'absent') label.textContent = '✖';
+  else label.textContent = '?';
 
   chip.classList.remove(...states);
   chip.classList.add(next);
-  chip.textContent = next.charAt(0).toUpperCase() + next.slice(1);
+
 
   // Firestore write
   const date  = datePicker.value;
