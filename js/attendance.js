@@ -100,30 +100,44 @@ function buildRosterFromArray(swimmers) {
 
   rosterBody.innerHTML = '';
 
-  swimmers.forEach(({ name, age }) => {
+  swimmers.forEach(swimmer => {            // keep full object
+    const name      = swimmer.name;
+    const ageGroup  = swimmer['age group'] || swimmer.age || '';
+  
     const tr = document.createElement('tr');
-    tr.dataset.age = age;
-
+    tr.dataset.age = ageGroup;             // if you still group by age
+  
+    /* --- name cell --- */
     const nameTd = document.createElement('td');
     nameTd.textContent = name;
-
+  
+    /* --- age-group cell (new column) --- */
+    const ageTd = document.createElement('td');
+    ageTd.className = 'col-age';
+    ageTd.textContent = swimmer.age;
+  
+    /* --- status cell (unchanged) --- */
     const statusTd = document.createElement('td');
     statusTd.className = 'col-status';
-    const chip = document.createElement('span');
+  
+    const chip   = document.createElement('span');
     chip.className = 'chip toggle unsure';
     chip.setAttribute('role', 'button');
-
+  
     const lbl = document.createElement('span');
     lbl.className = 'knob-label';
-    lbl.textContent = '?';          // initial (unsure)
+    lbl.textContent = '?';
     chip.appendChild(lbl);
-
+  
     statusTd.appendChild(chip);
-
+  
+    /* append in order: name → age-group → status */
     tr.appendChild(nameTd);
+    tr.appendChild(ageTd);
     tr.appendChild(statusTd);
     rosterBody.appendChild(tr);
   });
+  
 
   attachChipListeners();  // wire up click handlers
 }
@@ -143,6 +157,10 @@ function handleCSV(evt) {
   reader.readAsText(file);
 }
 
+
+
+/* ---------- HEADER-AWARE ROSTER PARSE ----------
+
 function buildRosterFromCSV(csvText) {
   const lines = csvText.trim().split(/\r?\n/);
   if (/^name\s*,/i.test(lines[0])) lines.shift();        // drop header
@@ -157,7 +175,35 @@ function buildRosterFromCSV(csvText) {
     setDoc(doc(collection(db, 'roster'), sw.name), sw)
       .catch(err => console.error('Roster write:', err));
   });
+} 
+
+---------- HEADER-AWARE ROSTER PARSE ---------- */
+
+
+
+
+/* ---------- HEADER-AWARE ROSTER PARSE ---------- */
+function buildRosterFromCSV(csvText) {
+  const [headerLine, ...lines] = csvText.trim().split(/\r?\n/);
+  const headers = headerLine.split(',').map(h => h.trim().toLowerCase());
+  // Example headers → ["name","age group","age"]
+
+  const swimmers = lines.map(line => {
+    const cells = line.split(',').map(c => c.trim());
+    const obj = Object.fromEntries(headers.map((h,i) => [h, cells[i]]));
+    // Ensure legacy names exist for older code ↓
+    obj.name = obj.name || obj['swimmer'] || 'UNKNOWN';
+    obj.age  = obj.age  || obj['age group'] || '';
+    return obj;           // may include extra fields automatically
+  });
+
+  // Push to Firestore (admin only)
+  swimmers.forEach(sw => {
+    setDoc(doc(collection(db, 'roster'), sw.name), sw)
+      .catch(err => console.error('Roster write:', err));
+  });
 }
+
 
 /* ------------------------------------------------------------------ */
 /* 6.  Age-group filtering                                            */
