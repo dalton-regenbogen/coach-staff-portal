@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BHST Attendance</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="wrapper">
+      <nav class="navBar">
+        <ul class="navList-leftSide">
+          <li><a class="navLink" href="TheBrand.html">THE BRAND</a></li>
+          <li><a class="navLink" href="#">FAMILY</a></li>
+          <li><a class="navLink" href="#">RESOURCES</a></li>
+          <li><a class="navLink" href="#">PRACTICES</a></li>
+        </ul>
+        <div class="navLogo"><a href="index.html"><img src="/assets/website-logo.svg"></a></div>
+        <div class="navList-rightSide">
+          <a class="navIcon" href="attendance.html"><i class="fa-regular fa-square-check"></i></a>
+          <a class="navIcon" href="#"><i class="fa-regular fa-calendar-day"></i></a>
+          <a class="navIcon" href="login.html"><i class="fa-regular fa-circle-user"></i></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="wrapper">
+      
+      <div class="attendanceSection">
+
+        <label id="rosterUpload" style="cursor:pointer;font-size:.9rem;color:#0369a1;">
+          Upload roster CSV
+          <input type="file" id="csvInput" accept=".csv" style="display:none">
+        </label>
+
+        <section id="filters" class="filters">
+          <label>
+            Date:
+            <input type="date" id="datePicker" />
+          </label>
+      
+          <label>
+            Age Group:
+            <select id="ageFilter">
+              <option value="all">All</option>
+              <option value="6U">6 & Under</option>
+              <option value="7-8">7‑8</option>
+              <option value="9-10">9‑10</option>
+              <option value="11-12">11‑12</option>
+              <option value="13-14">13-14</option>
+              <option value="15-18">15-18</option>
+            </select>
+          </label>
+        </section>
+
+        <table id="rosterTable" class="attendanceTable">
+          <thead>
+            <tr><th class="thOne">Name</th><th class="thTwo">Status</th></tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <footer >
+    <div class="wrapper">
+      <div class="footerGrid">
+        <div class="footerSection footerOne">
+          <div class="footerNav-linkLeft">
+            <ul>
+              <li><a class="footerNav-linkLeft-title" href="TheBrand.html">THE BRAND</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#MV-Section">Mission & Vision</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#CV-Section">Core Values</a></li>
+            </ul>
+          </div>
+          <div class="footerNav-linkLeft">
+            <Ul>
+              <li><a class="footerNav-linkLeft-title" href="#">FAMILY</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+            </Ul>
+          </div>
+          <div class="footerNav-linkLeft">
+            <Ul>
+              <li><a class="footerNav-linkLeft-title" href="#">RESOURCES</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+            </Ul>
+          </div>
+          <div class="footerNav-linkLeft">
+            <Ul>
+              <li><a class="footerNav-linkLeft-title" href="#">PRACTICES</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+            </Ul>
+          </div>
+        </div>
+        <div class="footerSection footerTwo">
+          <div class="footerLogo"><a href="#index"><img src="/assets/website-logo-white.png"></a></div>
+          <address>7197 Riley Rd Warrenton, VA 20187</address>
+          <p>2025 Brookside Hurricanes Coaching Portal. All Rights Reserved.</p>
+        </div>
+        <div class="footerSection footerThree">
+          <a href="#">LOGIN</a>
+          <a href="#">ATTENDANCE TRACKER</a>
+          <a href="#">CALENDAR</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/attendance.js"></script>
+</body>
+</html>
