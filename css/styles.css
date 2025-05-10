@@ -1138,6 +1138,7 @@ footer {
 
 /* Attendance Page */
 .attendanceSection {
+  border: 2ps solid red;
   padding-block-start: 12rem;
   display: flex;
   flex-direction: column;
@@ -1145,6 +1146,9 @@ footer {
   align-items: center;
   gap: 2rem;
   font-family: var(--ff);
+
+  background-image: url(../assets/Black\ Line\ graphic\(opacity10\).svg);
+  background-repeat: space repeat;
 }
 
 .hidden { 
@@ -1180,7 +1184,9 @@ footer {
     padding-block: 1rem;
   }
 
-  .filters 
+  .filters {
+
+  }
 }
 
 .attendanceTable {

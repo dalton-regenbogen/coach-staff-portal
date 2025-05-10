@@ -33,37 +33,49 @@ const datePicker = document.getElementById('datePicker');
 const ageFilter  = document.getElementById('ageFilter');
 const csvInput   = document.getElementById('csvInput');
 const rosterBody = document.querySelector('#rosterTable tbody');
+const sessionPick = document.getElementById('sessionPick');
 
 /* ------------------------------------------------------------------ */
-/* 3. One-time page setup                                             */
+/* 3. One-time page setup – REPLACE the whole function with this      */
 /* ------------------------------------------------------------------ */
-
 function initialiseAttendanceApp() {
-  // A. default the date picker to today
-  if (datePicker) {
-    datePicker.value = new Date().toISOString().split('T')[0];
-  }
 
-  // B. listen for roster changes in Firestore (real-time)
+  /* A. default date picker to today */
+  datePicker.value = new Date().toISOString().split('T')[0];
+
+  /* B. real-time roster listener */
   watchRoster();
 
-  // C. start listening to attendance for *today*
-  let unsubscribeAttendance = listenToAttendance(datePicker.value);
+  /* C. helper to (re)subscribe to attendance */
+  let unsubscribeAttendance = null;
 
-  // D. change listener → switch attendance query
-  datePicker.addEventListener('change', () => {
-    // stop previous snapshot listener
+  function startAttendanceListener() {
+    /* stop the previous snapshot listener, if any  */
     if (typeof unsubscribeAttendance === 'function') unsubscribeAttendance();
-    // start new
-    unsubscribeAttendance = listenToAttendance(datePicker.value);
-  });
 
-  // E. age-filter dropdown
+    /* start a new one using BOTH date + session */
+    unsubscribeAttendance = listenToAttendance(
+      datePicker.value,
+      sessionPick.value
+    );
+  }
+
+  /* D. kick it off for the very first time */
+  startAttendanceListener();
+
+  /* E. re-run whenever date OR session changes */
+  datePicker .addEventListener('change', startAttendanceListener);
+  sessionPick.addEventListener('change', startAttendanceListener);
+
+  /* F. age-group dropdown & CSV picker remain the same */
   ageFilter.addEventListener('change', applyAgeFilter);
-
-  // F. CSV file picker
   if (csvInput) csvInput.addEventListener('change', handleCSV, false);
+
+  /* G. (optional) hide session picker on non-Tue/Wed days */
+  toggleSessionVisibility();
+  datePicker.addEventListener('change', toggleSessionVisibility);
 }
+
 /* ------------------------------------------------------------------ */
 /* 4.  Firestore – Roster (collection: 'roster')                      */
 /* ------------------------------------------------------------------ */
@@ -162,8 +174,8 @@ function applyAgeFilter() {
 /* ------------------------------------------------------------------ */
 /* 7.  Attendance – Firestore                                         */
 /* ------------------------------------------------------------------ */
-function listenToAttendance(dateStr) {
-  const q = query(collection(db, 'attendance'), where('date', '==', dateStr));
+function listenToAttendance(dateStr, sessStr) {
+  const q = query(collection(db, 'attendance'), where('date', '==', dateStr), where('session', '==', sessStr));
 
   return onSnapshot(q, snap => {
     const obj = {};
@@ -208,6 +220,7 @@ function attachChipListeners() {
 
 
 function cycleStatus(chip) {
+  const session = sessionPick.value;
   const states = ['present', 'unsure', 'absent'];
   const current = states.findIndex(s => chip.classList.contains(s));
   const next    = states[(current + 1) % states.length];
@@ -224,27 +237,18 @@ function cycleStatus(chip) {
   // Firestore write
   const date  = datePicker.value;
   const name  = chip.closest('tr').cells[0].textContent.trim();
-  const docId = `${date}_${name}`;
+  const docId = `${date}_${session}_${name}`;
 
   setDoc(doc(db, 'attendance', docId),
-         { date, name, status: next })
+         { date, session, name, status: next })
     .catch(err => console.error('Attendance write:', err));
 }
 
-/* ------------------------------------------------------------------ */
-/* 9.  (Optional) localStorage backup – remove if you dislike it       */
-/* ------------------------------------------------------------------ */
-/* Converts current table to {name: status} map  */
-function tableToObject() {
-  const obj = {};
-  document.querySelectorAll('#rosterTable tbody tr').forEach(row => {
-    const name = row.cells[0].textContent.trim();
-    const chip = row.querySelector('.chip');
-    if (name && chip) {
-      if (chip.classList.contains('present')) obj[name] = 'present';
-      else if (chip.classList.contains('absent')) obj[name] = 'absent';
-      else obj[name] = 'unsure';
-    }
-  });
-  return obj;
+function toggleSessionVisibility() {
+  const wd = new Date(datePicker.value).getDay();          // 0=Sun … 6=Sat
+  const show = (wd === 1 || wd === 2);                     // Tue=2, Wed=3
+  sessionPick.style.display = show ? 'inline-block' : 'none';
 }
+
+datePicker.addEventListener('change', toggleSessionVisibility);
+toggleSessionVisibility();    // run once on load
