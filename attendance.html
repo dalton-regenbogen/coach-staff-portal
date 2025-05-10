@@ -36,19 +36,20 @@
       <div class="attendanceSection">
 
         <section id="filters" class="filters">
-          <label>
-            Date:
-            <input type="date" id="datePicker" />
-          </label>
+          <div class="dateTime-selectors">
+              <label>
+                Date:
+                <input type="date" id="datePicker" />
+              </label>
 
-          <lable>
-            Time of Day:
-            <select id="sessionPick">
-              <option value="AM">AM</option>
-              <option value="PM">PM</option>
-            </select>
-          </lable>
-      
+              <lable>
+                [AM | PM]: 
+                <select id="sessionPick">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </lable>
+            </div>
           <label>
             Age Group:
             <select id="ageFilter">

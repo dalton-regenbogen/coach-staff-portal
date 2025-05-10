@@ -1146,8 +1146,7 @@ footer {
   align-items: center;
   gap: 2rem;
   font-family: var(--ff);
-
- 
+  padding-block-end: 10rem;
 }
 
 .hidden { 
@@ -1172,6 +1171,13 @@ footer {
   padding-block: 1.5rem;
 }
 
+.dateTime-selectors {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
 #rosterUpload {
   cursor: pointer;
 }
@@ -1187,6 +1193,13 @@ footer {
 .attendanceTable {
   width: 35rem;
   border-collapse: collapse;
+  box-shadow: 0px 8px 8px 0px rgba(0,0,0,.35);
+}
+
+@media (max-width: 478px) {
+  .attendanceTable {
+    width: 90%;
+  }
 }
 
 .attendanceTable thead {
