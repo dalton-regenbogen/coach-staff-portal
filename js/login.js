@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then((userCredential) => {
         console.log("Login successful:", userCredential.user.email);
         // Redirect to index.html on successful login
-        window.location.href = "index.html";
+        window.location.href = "homepage.html";
       })
       .catch((error) => {
         console.error("Login error:", error);

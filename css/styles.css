@@ -712,6 +712,13 @@ footer {
     flex-direction: column;
     border-radius: 10px;
     position: relative;
+
+    transition: all 0.3s ease-out;
+}
+
+.coreValue-Card:hover {
+  transform: translateY(-10px) scale(1.005) translateZ(0);
+  box-shadow: 0 14px 18px rgba(0,0,0,0.2);
 }
 
 .cardContainer-one{
@@ -1341,3 +1348,40 @@ td {
 .present { background: #16a34a; } 
 .unsure  { background: #9ca3af; } 
 .absent  { background: #dc2626; }
+
+.bulk-container {
+  background-color: var(--clr-primary-100);
+  box-shadow: -5px 5px rgba(0,0,0);
+  border-radius: 10px;
+  border: 3px solid var(--clr-primary-300);
+  width: 30%;
+}
+
+.bulk-container p {
+  padding-block-start: .5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.bulk-actions {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.bulk-actions button {
+  margin-block: 1rem;
+  padding: .2rem 1.3rem;
+  border: none;
+  border-radius: .4rem;
+  font-size: .85rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.bulk-actions button[data-action="present"] { background:#16a34a; }
+.bulk-actions button[data-action="unsure"]  { background:#9ca3af; }
+.bulk-actions button[data-action="absent"]  { background:#dc2626; }

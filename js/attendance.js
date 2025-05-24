@@ -157,31 +157,6 @@ function handleCSV(evt) {
   reader.readAsText(file);
 }
 
-
-
-/* ---------- HEADER-AWARE ROSTER PARSE ----------
-
-function buildRosterFromCSV(csvText) {
-  const lines = csvText.trim().split(/\r?\n/);
-  if (/^name\s*,/i.test(lines[0])) lines.shift();        // drop header
-
-  const swimmers = lines.map(l => {
-    const [rawName, rawAge] = l.split(',').map(s => s.trim());
-    return { name: rawName, age: rawAge };
-  });
-
-  // overwrite collection (admin only: see Firestore rules)
-  swimmers.forEach(sw => {
-    setDoc(doc(collection(db, 'roster'), sw.name), sw)
-      .catch(err => console.error('Roster write:', err));
-  });
-} 
-
----------- HEADER-AWARE ROSTER PARSE ---------- */
-
-
-
-
 /* ---------- HEADER-AWARE ROSTER PARSE ---------- */
 function buildRosterFromCSV(csvText) {
   const [headerLine, ...lines] = csvText.trim().split(/\r?\n/);
@@ -264,6 +239,50 @@ function attachChipListeners() {
   });
 }
 
+/* ---------- permanent bulk-action bar ---------- */
+import { writeBatch } from
+  'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const bulkBar = document.getElementById('bulkActions');
+
+bulkBar.querySelectorAll('[data-action]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const state = btn.dataset.action;                   // present | unsure | absent
+    const label = state === 'present' ? 'Present' :
+                  state === 'absent'  ? 'Absent'  : 'Unsure';
+
+    if (confirm(`Mark ALL visible swimmers ${label}?`)) {
+      applyBulk(state);                                // existing function
+    }
+  });
+});
+
+function applyBulk(state) {
+  const rows = document.querySelectorAll('#rosterTable tbody tr:not(.hidden)');
+  const batch = writeBatch(db);
+
+  rows.forEach(row => {
+    const chip  = row.querySelector('.chip');
+    const label = chip.querySelector('.knob-label');
+
+    chip.classList.remove('present','unsure','absent');
+    chip.classList.add(state);
+
+    label.textContent = state === 'present' ? '✔'
+                    :  state === 'absent'  ? '✖'
+                    :  '?';
+
+    const name    = row.cells[0].textContent.trim();
+    const date    = datePicker.value;
+    const session = sessionPick.value;
+    const docId   = `${date}_${session}_${name}`;
+
+    batch.set(doc(db,'attendance',docId),
+              { date, session, name, status: state });
+  });
+
+  batch.commit().catch(err => console.error('Bulk write:', err));
+}
 
 function cycleStatus(chip) {
   const session = sessionPick.value;
