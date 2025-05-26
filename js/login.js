@@ -23,7 +23,6 @@ function getFriendlyErrorMessage(error) {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", function() {
   console.log("Login page loaded.");
 
@@ -53,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
       })
       .then((userCredential) => {
         console.log("Login successful:", userCredential.user.email);
-        // Redirect to index.html on successful login
+        // Redirect to homepage.html on successful login
         window.location.href = "homepage.html";
       })
       .catch((error) => {

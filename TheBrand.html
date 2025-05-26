@@ -22,8 +22,8 @@
             <div class="navLogo"><a href="homepage.html"><img src="/assets/website-logo.svg"></a></div>
             <div class="navList-rightSide">
               <a class="navIcon" href="attendance.html"><i class="fa-regular fa-square-check"></i></a>
-              <a class="navIcon" href="#"><i class="fa-regular fa-calendar-day"></i></a>
-              <a class="navIcon" href="login.html"><i class="fa-regular fa-circle-user"></i></a>
+              <a class="navIcon" href="metrics.html"><i class="fa-solid fa-filter"></i></a>
+              <a class="navIcon" href="#"><i class="fa-regular fa-circle-user"></i></a>
             </div>
           </nav>
         </div>
@@ -364,32 +364,13 @@
               <p>2025 Brookside Hurricanes Coaching Portal. All Rights Reserved.</p>
             </div>
             <div class="footerSection footerThree">
-              <a href="login.html">LOGIN</a>
+              <a href="#">USER PAGE</a>
               <a href="attendance.html">ATTENDANCE TRACKER</a>
-              <a href="#">CALENDAR</a>
+              <a href="metrics.html">ATTENDANCE METRICS</a>
             </div>
           </div>
         </div>
       </footer>
     <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const header   = document.querySelector('header');
-        const scroller = document.scrollingElement || document.documentElement; // body on iOS
-      
-        function flipHeader() {
-          header.classList.toggle('scrolled', (scroller.scrollTop || window.scrollY) > 0);
-        }
-      
-        /* ❶ listen on whichever element actually scrolls */
-        scroller.addEventListener('scroll', flipHeader, { passive: true });
-      
-        /* ❷ also listen on window in case some browsers only bubble there */
-        window.addEventListener('scroll', flipHeader, { passive: true });
-      
-        /* ❸ run once in case we load mid‑page */
-        flipHeader();
-      });
-      </script>      
   </body>
 </html>

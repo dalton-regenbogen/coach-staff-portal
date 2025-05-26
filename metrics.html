@@ -1,197 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Attendance Metrics</title>
-<link rel="stylesheet" href="css/styles.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<style>
-/* --- quick layout ------------------------------------------------ */
-body{font-family:'Roboto Condensed', sans-serif;margin:0;padding:1rem;max-width:1200px}
-.metricsFilters{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem}
-.kpi-wrap{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
-.kpi{flex:1 1 140px;background:#f3f4f6;padding:.8rem;border-radius:.5rem;text-align:center}
-#trendCard{background:#fff;padding:1rem;border:1px solid #e5e7eb;border-radius:.5rem;margin-bottom:1rem}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th,td{padding:.5rem .75rem;border-bottom:1px solid #e5e7eb;text-align:center}
-th{background:#f9fafb;font-weight:600}
-tr:hover{background:#f3f4f6}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
-.modal>.box{background:#fff;padding:1rem;border-radius:.5rem;max-height:80vh;overflow:auto;min-width:300px}
-.modal.show{display:flex}
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Attendance Metrics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div class="wrapper">
+        <nav class="navBar">
+          <ul class="navList-leftSide">
+            <li><a class="navLink" href="TheBrand.html">THE BRAND</a></li>
+            <li><a class="navLink" href="#">FAMILY</a></li>
+            <li><a class="navLink" href="#">RESOURCES</a></li>
+            <li><a class="navLink" href="#">PRACTICES</a></li>
+          </ul>
+          <div class="navLogo"><a href="homepage.html"><img src="/assets/website-logo.svg"></a></div>
+          <div class="navList-rightSide">
+            <a class="navIcon" href="attendance.html"><i class="fa-regular fa-square-check"></i></a>
+           <a class="navIcon" href="metrics.html"><i class="fa-solid fa-filter"></i></a>
+            <a class="navIcon" href="#"><i class="fa-regular fa-circle-user"></i></a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper">
+        <h1 class="metricsH1">Attendance Metrics</h1>
 
-<h1>Attendance Metrics</h1>
+        <!-- Filters -->
+        <div class="metricsFilters">
+          <div>
+            <label>From: <input type="date" id="fromDate"></label>
+            <label>To: <input type="date" id="toDate"></label>
+            <label>Week:
+              <select id="weekSelect">
+                <option value="current">Current</option>
+                <option value="1">Week 1</option>
+                <option value="2">Week 2</option>
+                <option value="3">Week 3</option>
+                <option value="3">Week 4</option>
+                <option value="3">Week 5</option>
+                <option value="3">Week 6</option>
+                <option value="3">Week 7</option>
+                <option value="3">Week 8</option>
+                <option value="9">Week 9</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>Age Group:
+              <select id="ageSelect">
+                <option value="all">All</option>
+                <option value="6U">6&U</option>
+                <option value="7-8">7-8</option>
+                <option value="9-10">9-10</option>
+                <option value="11-12">11-12</option>
+                <option value="13-14">13-14</option>
+                <option value="15-18">15-18</option>
+              </select>
+            </label>
 
-<!-- Filters -->
-<div class="metricsFilters">
-  <label>From: <input type="date" id="fromDate"></label>
-  <label>To: <input type="date" id="toDate"></label>
+            <button id="refreshBtn">Refresh</button>
+          </div>
+        </div>
 
-  <label>Age Grp:
-    <select id="ageSelect">
-      <option value="all">All</option>
-      <option value="6U">6&U</option><option value="7-8">7-8</option>
-      <option value="9-10">9-10</option><option value="11-12">11-12</option>
-      <option value="13O">13&O</option>
-    </select>
-  </label>
+        <!-- KPI cards -->
+        <div class="kpi-wrap">
+          <div class="kpi"><h2>Attendance Percentage</h2><p id="teamPct">–%</p></div>
+          <div class="kpi"><h2>Total Sessions</h2><p id="sessTotal">0</p></div>
+          <div class="kpi"><h2>Swimmer Count</h2><p id="swimmersTotal">0</p></div>
+        </div>
 
-  <button id="refreshBtn">Refresh</button>
-  <button id="csvBtn">Export CSV</button>
-</div>
+        <!-- Trend chart -->
+        <div id="trendCard">
+          <canvas id="trendChart" height="140"></canvas>
+        </div>
 
-<!-- KPI cards -->
-<div class="kpi-wrap">
-  <div class="kpi"><h2 id="teamPct">– %</h2><p>Team&nbsp;Attendance</p></div>
-  <div class="kpi"><h2 id="sessTotal">0</h2><p>Total&nbsp;Sessions</p></div>
-  <div class="kpi"><h2 id="swimmersTotal">0</h2><p>Swimmers&nbsp;Count</p></div>
-</div>
+        <!-- Detail table -->
+        <div class="table-wrap">
+          <table id="detailTable" class="metricsTable">
+            <thead>
+              <tr><th class="metricsTable-roundedLeft">Swimmer</th><th>Age Grp</th><th>Present&nbsp;%</th><th>Present</th><th>Absent</th><th class="metricsTable-roundedRight">Unsure</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
-<!-- Trend chart -->
-<div id="trendCard">
-  <canvas id="trendChart" height="140"></canvas>
-</div>
-
-<!-- Detail table -->
-<div class="table-wrap">
-  <table id="detailTable">
-    <thead>
-      <tr><th>Swimmer</th><th>Age Grp</th><th>Present&nbsp;%</th><th>Present</th><th>Absent</th><th>Unsure</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-<!-- Drill-down modal -->
-<div id="modal" class="modal"><div class="box">
-  <h3 id="modalTitle"></h3>
-  <table id="modalTable"><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody></tbody></table>
-  <button onclick="modal.classList.remove('show')">Close</button>
-</div></div>
-
-<!-- CDN libs -->
-<script type="module" src="./js/firebase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-<!-- Metrics JS (below) -->
-<script type="module">
-import { db } from './js/firebase-config.js';
-import { collection, query, where, onSnapshot } from
-  'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-/* ---------- helpers ---------- */
-const $ = sel=>document.querySelector(sel);
-const fromDate = $('#fromDate'), toDate = $('#toDate');
-const ageSelect = $('#ageSelect'), refreshBtn = $('#refreshBtn');
-const teamPct = $('#teamPct'), sessTotal = $('#sessTotal'), swimmersTotal = $('#swimmersTotal');
-const detailTableBody = $('#detailTable tbody');
-const modal = $('#modal'), modalTitle=$('#modalTitle'), modalTableBody=$('#modalTable tbody');
-
-/* ---------- init default range (last 30 days) ---------- */
-const today = new Date().toISOString().split('T')[0];
-const thirtyAgo = new Date(Date.now()-29*864e5).toISOString().split('T')[0];
-fromDate.value = thirtyAgo; toDate.value = today;
-
-/* ---------- Trend chart setup ---------- */
-const ctx = $('#trendChart');
-const trendChart = new Chart(ctx,{type:'line',data:{labels:[],datasets:[{label:'% Present',data:[]}]},
-  options:{scales:{y:{beginAtZero:true,max:100}}}});
-
-/* ---------- main refresh ---------- */
-refreshBtn.onclick = refresh; csvBtn.onclick = exportCSV;
-refresh();  // run once on load
-
-function refresh(){
-  const start = fromDate.value, end = toDate.value;
-  const ageFilter = ageSelect.value;             // "all" or age group id
-  const q = query(collection(db,'attendance'),
-    where('date','>=',start),
-    where('date','<=',end));
-  onSnapshot(q,snap=>{
-    /* aggregate */
-    const swimmers = {};
-    snap.forEach(doc=>{
-      const { name, status, date, session } = doc.data();
-      if (ageFilter!=='all' && !doc.id.includes(ageFilter)) return; // cheap filter
-      if(!swimmers[name]) swimmers[name]={present:0,absent:0,unsure:0,dates:{}};
-      swimmers[name][status]+=1;
-      swimmers[name].dates[date+' '+session]=status;
-    });
-
-    const sessCount = Object.values(swimmers)
-          .reduce((sum,s)=>sum+s.present+s.absent+s.unsure,0);
-    const presentCount = Object.values(swimmers)
-          .reduce((sum,s)=>sum+s.present,0);
-    const pct = sessCount?Math.round(presentCount*100/sessCount):0;
-
-    /* KPI cards */
-    teamPct.textContent = pct+' %';
-    sessTotal.textContent = sessCount;
-    swimmersTotal.textContent = Object.keys(swimmers).length;
-
-    /* Trend chart data by day */
-    const dayMap={};
-    snap.forEach(doc=>{
-      const {date,status} = doc.data();
-      if(!dayMap[date]) dayMap[date]={present:0,total:0};
-      if(status==='present') dayMap[date].present+=1;
-      dayMap[date].total+=1;
-    });
-    const labels = Object.keys(dayMap).sort();
-    const data = labels.map(d=>Math.round(dayMap[d].present*100/dayMap[d].total));
-    trendChart.data.labels = labels;
-    trendChart.data.datasets[0].data = data;
-    trendChart.update();
-
-    /* Detail table */
-    detailTableBody.innerHTML='';
-    Object.entries(swimmers).sort((a,b)=>b[1].present-a[1].present).forEach(([name,s])=>{
-      const row=document.createElement('tr');
-      const pct = s.present+s.absent+s.unsure
-        ? Math.round(s.present*100/(s.present+s.absent+s.unsure)) : 0;
-      row.innerHTML = `
-        <td class="swImmer">${name}</td>
-        <td>${ageFilter==='all'?'':ageFilter}</td>
-        <td>${pct}%</td><td>${s.present}</td><td>${s.absent}</td><td>${s.unsure}</td>`;
-      row.onclick=()=>openModal(name,s);
-      detailTableBody.appendChild(row);
-    });
-  });
-}
-
-/* ---------- Drill-down modal ---------- */
-function openModal(name,s){
-  modalTitle.textContent=name;
-  modalTableBody.innerHTML='';
-  Object.entries(s.dates).sort().forEach(([d,st])=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${d}</td><td>${st}</td>`;
-    modalTableBody.appendChild(tr);
-  });
-  modal.classList.add('show');
-}
-
-/* ---------- CSV Export ---------- */
-function exportCSV(){
-  let csv='Name,Present,Absent,Unsure\n';
-  detailTableBody.querySelectorAll('tr').forEach(tr=>{
-    const cells=tr.querySelectorAll('td');
-    csv+=`${cells[0].textContent},${cells[3].textContent},${cells[4].textContent},${cells[5].textContent}\n`;
-  });
-  const blob=new Blob([csv],{type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download='attendance_stats.csv';a.click();
-  URL.revokeObjectURL(url);
-}
-</script>
-
-</body>
+        <!-- Drill-down modal -->
+        <div id="modal" class="modal"><div class="box">
+          <h3 id="modalTitle"></h3>
+          <table id="modalTable"><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody></tbody></table>
+          <button onclick="modal.classList.remove('show')">Close</button>
+        </div>
+      </div>
+    </main>
+    <footer >
+      <div class="wrapper">
+        <div class="footerGrid">
+          <div class="footerSection footerOne">
+            <div class="footerNav-linkLeft">
+              <ul>
+                <li><a class="footerNav-linkLeft-title" href="TheBrand.html">THE BRAND</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#MV-Section">Mission & Vision</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#CV-Section">Core Values</a></li>
+              </ul>
+            </div>
+            <div class="footerNav-linkLeft">
+              <Ul>
+                <li><a class="footerNav-linkLeft-title" href="#">FAMILY</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              </Ul>
+            </div>
+            <div class="footerNav-linkLeft">
+              <Ul>
+                <li><a class="footerNav-linkLeft-title" href="#">RESOURCES</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              </Ul>
+            </div>
+            <div class="footerNav-linkLeft">
+              <Ul>
+                <li><a class="footerNav-linkLeft-title" href="#">PRACTICES</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+              </Ul>
+            </div>
+          </div>
+          <div class="footerSection footerTwo">
+            <div class="footerLogo"><a href="#index"><img src="/assets/website-logo-white.png"></a></div>
+            <address>7197 Riley Rd Warrenton, VA 20187</address>
+            <p>2025 Brookside Hurricanes Coaching Portal. All Rights Reserved.</p>
+          </div>
+          <div class="footerSection footerThree">
+            <a href="#">USER PAGE</a>
+            <a href="attendance.html">ATTENDANCE TRACKER</a>
+            <a href="metrics.html">ATTENDANCE METRICS</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- CDN libs -->
+    <script type="module" src="/js/firebase-config.js"></script>
+    <script type="module" src="/js/metrics.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
+  </body>
 </html>
