@@ -1478,7 +1478,7 @@ td {
   font-family: var(--ff);
   font-weight: 700;
   
-}
+} 
 
 .modal {
   position:fixed;
@@ -1503,11 +1503,13 @@ td {
 }
 
 
-
-
 tbody tr:nth-child(odd) {
   background-color: #ffffff;
 }
 tbody tr:nth-child(even) { 
   background:#eef0f1; 
 }
+
+#detailTable tr.goal { 
+  background:#d1fae5;; 
+}   

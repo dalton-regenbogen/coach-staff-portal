@@ -37,9 +37,6 @@ function initAttendance() {
   /* ageFilter default = 'all' */
   ageFilter.value   = loadPref('att_age', 'all');
 
-  /* ---------- One-time setup ---------- */
-  datePicker.value = new Date().toISOString().split('T')[0];   // today
-
   datePicker .addEventListener('change', e => savePref('att_date',  e.target.value));
   sessionPick.addEventListener('change', e => savePref('att_sess',  e.target.value));
   ageFilter  .addEventListener('change', e => savePref('att_age',   e.target.value));

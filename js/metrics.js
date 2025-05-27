@@ -23,8 +23,7 @@ const fromDate   = $('#fromDate');
 const toDate     = $('#toDate');
 const ageSelect  = $('#ageSelect');
 const refreshBtn = $('#refreshBtn');
-const csvBtn     = $('#csvBtn');
-
+const weekSel   = $('#weekSelect');  
 const teamPct       = $('#teamPct');
 const sessTotal     = $('#sessTotal');
 const swimmersTotal = $('#swimmersTotal');
@@ -34,11 +33,9 @@ const modal       = $('#modal');
 const modalTitle  = $('#modalTitle');
 const modalBody   = $('#modalTable tbody');
 
-/* ---------- Default date range (last 30 days) ---------- */
-const today = new Date().toISOString().split('T')[0];
-const thirtyAgo = new Date(Date.now() - 29*864e5).toISOString().split('T')[0];
-fromDate.value = thirtyAgo;
-toDate.value   = today;
+const SEASON_START = new Date('2025-05-26');   /* Monday of Week 1 – EDIT if needed */
+
+const WEEK_GOAL = 5;
 
 /* ---------- Trend chart (Chart.js already loaded) ---------- */
 const trendChart = new Chart($('#trendChart'), {
@@ -60,9 +57,33 @@ onSnapshot(collection(db,'roster'), snap => {
   refresh();                // refresh metrics whenever roster updates
 });
 
+/* ---------- Default date range = current week ---------- */
+setCurrentWeek();                     /* NEW */
+
 /* ---------- Event hooks ---------- */
 refreshBtn.onclick = refresh;
-csvBtn    .onclick = exportCSV;
+weekSel.addEventListener('change',e=>{            /* NEW */
+  if(e.target.value==='current') setCurrentWeek();
+  else{
+    const [s,eD]=weekToRange(+e.target.value);
+    fromDate.value=s; toDate.value=eD;
+  }
+  refresh();
+});
+
+function weekToRange(n){                              /* NEW */
+  const s=new Date(SEASON_START); s.setDate(s.getDate()+7*(n-1));
+  const e=new Date(s); e.setDate(e.getDate()+6);
+  return [ s.toISOString().split('T')[0], e.toISOString().split('T')[0] ];
+}
+function setCurrentWeek(){                            /* NEW */
+  const diff=Math.floor((Date.now()-SEASON_START)/864e5);
+  const wk=Math.floor(diff/7)+1;
+  weekSel.value='current';
+  const [s,eD]=weekToRange(wk);
+  fromDate.value=s; toDate.value=eD;
+}
+
 
 /* ---------- Main refresh ---------- */
 function refresh(){
@@ -97,6 +118,32 @@ function refresh(){
       dayMap[date].total += 1;
     });
 
+    /* ---------- pad missing swimmers as 'unsure' ---------- */
+    Object.entries(ageMap).forEach(([swimmer, ageGrp]) => {
+      if (ageFilter !== 'all' && ageGrp !== ageFilter) return;
+
+      /* if the swimmer has no doc for that date range, fill gaps day-by-day */
+      const datesInRange = Object.keys(dayMap);
+      datesInRange.forEach(d => {
+        if (!swimmers[swimmer]?.dates?.[d]) {
+          /* add unsure doc to swimmer aggregate */
+          swimmers[swimmer] ??= { present:0, absent:0, unsure:0, ageGrp, dates:{} };
+          swimmers[swimmer].unsure += 1;
+          swimmers[swimmer].dates[d] = 'unsure';
+
+          /* add to per-day totals */
+          dayMap[d].total += 1;
+          // present unchanged
+        }
+      });
+    });
+
+
+    // ---------- NEW: count goal hitters ----------
+    const hitters = Object.values(swimmers)
+    .filter(s => s.present >= WEEK_GOAL).length;
+    goalHit.textContent = hitters;
+
     /* ---- KPI cards ---- */
     const sess = Object.values(dayMap).reduce((s,d)=>s+d.total ,0);
     const pres = Object.values(dayMap).reduce((s,d)=>s+d.present,0);
@@ -127,6 +174,9 @@ function refresh(){
           <td>${s.ageGrp}</td>
           <td>${pPct}%</td>
           <td>${s.present}</td><td>${s.absent}</td><td>${s.unsure}</td>`;
+
+          if (s.present >= WEEK_GOAL) tr.classList.add('goal');     // NEW
+
         tr.onclick = () => openModal(name,s);
         detailBody.appendChild(tr);
       });
@@ -145,19 +195,5 @@ function openModal(name,s){
       modalBody.appendChild(row);
     });
   modal.classList.add('show');
-}
-
-/* ---------- CSV export ---------- */
-function exportCSV(){
-  let csv = 'Name,Age Group,Present,Absent,Unsure\n';
-  detailBody.querySelectorAll('tr').forEach(tr=>{
-    const c = tr.children;
-    csv += `${c[0].textContent},${c[1].textContent},${c[3].textContent},${c[4].textContent},${c[5].textContent}\n`;
-  });
-  const blob = new Blob([csv],{ type:'text/csv' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href=url; a.download='attendance_stats.csv'; a.click();
-  URL.revokeObjectURL(url);
 }
 }
