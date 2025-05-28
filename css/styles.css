@@ -322,7 +322,7 @@ footer {
 
 @media (max-width: 478px) {
   .heroTitle {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
   .spanOne {
@@ -334,7 +334,9 @@ footer {
   }
 
   .heroContent {
-    font-size: .85rem;
+    margin: 0 auto;
+    width: 95%;
+    font-size: .9rem;
     margin-block-end: 2rem;
   }
 }

@@ -1,23 +1,27 @@
-/* attendance.js  – ES Module */
+/* attendance.js  – lean Firestore version (single-doc attendance)  */
 
 import { db, auth } from '/js/firebase-config.js';
 import {
-  collection, doc, setDoc, onSnapshot,
-  query, where, writeBatch
+  collection, doc, setDoc, getDoc, getDocs,
+  updateDoc, onSnapshot
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { onAuthStateChanged }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { savePref, loadPref } from '/js/utils.js';
 
+/* ───────── global cache ───────── */
+let rosterCache = [];                   // used to seed a new attendance doc
+
+/* ───────── auth guard ───────── */
 onAuthStateChanged(auth, user => {
   if (!user) { window.location.href = '/'; return; }
-  initAttendance();               // start the page logic
+  initAttendance();                     // start page logic
 });
 
 /* ────────────────────────────────────────────────────────────
-   3. Main page logic  (everything lives in here)
+   Main page logic
 ───────────────────────────────────────────────────────────── */
-function initAttendance() {
+async function initAttendance() {
 
   /* ---------- DOM handles ---------- */
   const datePicker   = document.getElementById('datePicker');
@@ -29,57 +33,55 @@ function initAttendance() {
 
   /* ---------- restore saved filter state ---------- */
   datePicker.value  = loadPref('att_date',
-  new Date().toISOString().split('T')[0]);
+                     new Date().toISOString().split('T')[0]);
+  sessionPick.value = loadPref('att_sess', sessionPick.value);  // AM/PM
+  ageFilter.value   = loadPref('att_age',  'all');
 
-  /* sessionPick already has AM/PM default from HTML; restore if saved */
-  sessionPick.value = loadPref('att_sess', sessionPick.value);
+  datePicker .addEventListener('change', e => savePref('att_date', e.target.value));
+  sessionPick.addEventListener('change', e => savePref('att_sess', e.target.value));
+  ageFilter  .addEventListener('change', e => savePref('att_age',  e.target.value));
 
-  /* ageFilter default = 'all' */
-  ageFilter.value   = loadPref('att_age', 'all');
+  /* ---------- one-time roster fetch ---------- */
+  await loadRosterOnce();
+  applyAgeFilter();                      // respect current age filter
 
-  datePicker .addEventListener('change', e => savePref('att_date',  e.target.value));
-  sessionPick.addEventListener('change', e => savePref('att_sess',  e.target.value));
-  ageFilter  .addEventListener('change', e => savePref('att_age',   e.target.value));
+  /* ---------- attendance listener ---------- */
+  let stopAtt = startAttendanceListener();
 
-
-
-  watchRoster();                               // live roster listener
-  let stopAtt = startAttendanceListener();     // live attendance listener
-
+  /* restart listener when date / session changes */
   datePicker .addEventListener('change', () => { stopAtt = restartAtt(stopAtt); });
   sessionPick.addEventListener('change', () => { stopAtt = restartAtt(stopAtt); });
-  ageFilter  .addEventListener('change', applyAgeFilter);
+
+  /* ---------- other UI handlers ---------- */
+  ageFilter.addEventListener('change', applyAgeFilter);
   if (csvInput) csvInput.addEventListener('change', handleCSV, false);
 
-  toggleSessionVisibility();                   // Tue/Wed only
+  toggleSessionVisibility();             // Tue/Wed only
   datePicker.addEventListener('change', toggleSessionVisibility);
 
-  /* ---------- Bulk-bar buttons ---------- */
+  /* bulk-bar buttons */
   bulkBar.querySelectorAll('[data-action]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const st = btn.dataset.action;                        // present|unsure|absent
-      const lbl = st==='present'?'Present':st==='absent'?'Absent':'Unsure';
+      const st  = btn.dataset.action;                 // present|unsure|absent
+      const lbl = st==='present' ? 'Present'
+               : st==='absent'  ? 'Absent'  : 'Unsure';
       if (confirm(`Mark ALL visible swimmers ${lbl}?`)) applyBulk(st);
     });
   });
 
-  /* ───── helper to restart att listener ─── */
+  /* ─── helper to restart att listener ─ */
   function restartAtt(prevStop){
     if (typeof prevStop==='function') prevStop();
     return startAttendanceListener();
   }
 
   /* ─────────────────────────────────────────────────────────
-     ROSTER
+     ROSTER  (read once)
   ───────────────────────────────────────────────────────── */
-  function watchRoster() {
-    const rosterRef = collection(db, 'roster');
-    onSnapshot(rosterRef, snap => {
-      const swimmers = [];
-      snap.forEach(d => swimmers.push(d.data()));
-      buildRosterFromArray(swimmers);
-      applyAgeFilter();             // respect current age filter
-    });
+  async function loadRosterOnce() {
+    const snap = await getDocs(collection(db, 'roster'));        // 1 read
+    rosterCache = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+    buildRosterFromArray(rosterCache);
   }
 
   function buildRosterFromArray(swimmers) {
@@ -100,7 +102,7 @@ function initAttendance() {
       /* age cell */
       const ageTd = document.createElement('td');
       ageTd.className = 'col-age';
-      ageTd.textContent = swimmer.age || ageGroup;     // numeric age first
+      ageTd.textContent = swimmer.age || '';
 
       /* status cell */
       const statusTd = document.createElement('td');
@@ -112,7 +114,6 @@ function initAttendance() {
 
       const lbl  = document.createElement('span');
       lbl.className = 'knob-label';
-      lbl.textContent = '';
       chip.appendChild(lbl);
       statusTd.appendChild(chip);
 
@@ -125,7 +126,7 @@ function initAttendance() {
     attachChipListeners();   // new chips become interactive
   }
 
-  /* upload CSV */
+  /* ───────────────── CSV upload (unchanged) ─────────────── */
   function handleCSV(evt){
     const file = evt.target.files[0]; if(!file) return;
     const reader = new FileReader();
@@ -151,18 +152,26 @@ function initAttendance() {
   }
 
   /* ─────────────────────────────────────────────────────────
-     ATTENDANCE
+     ATTENDANCE  (single-doc model)
   ───────────────────────────────────────────────────────── */
-  function startAttendanceListener(){
+  function startAttendanceListener() {
     return listenToAttendance(datePicker.value, sessionPick.value);
   }
 
   function listenToAttendance(dateStr, sessStr){
-    const q = query(collection(db,'attendance'),
-      where('date','==',dateStr), where('session','==',sessStr));
-    return onSnapshot(q, snap => {
-      const obj={}; snap.forEach(d=>{ obj[d.data().name]=d.data().status; });
-      applyAttendanceObject(obj);
+    const docRef = doc(db,'attendance', `${dateStr}_${sessStr}`);
+
+    /* create blank doc if it doesn’t exist */
+    getDoc(docRef).then(snap => {
+      if (!snap.exists()) {
+        const blank = rosterCache.reduce((acc,s)=>{ acc[s.name]='unsure'; return acc; },{});
+        setDoc(docRef, blank);                               // 1 write
+      }
+    });
+
+    /* live listener (1 read on attach, then incremental) */
+    return onSnapshot(docRef, snap => {
+      if (snap.exists()) applyAttendanceObject(snap.data());
     });
   }
 
@@ -170,12 +179,8 @@ function initAttendance() {
     rosterBody.querySelectorAll('tr').forEach(row=>{
       const name = row.cells[0].textContent.trim();
       const chip = row.querySelector('.chip');
-      const lbl  = chip.querySelector('.knob-label');
-      const st   = map[name]||'unsure';
-
-      chip.classList.remove('present','unsure','absent');
-      chip.classList.add(st);
-      lbl.textContent = st==='present'?'':st==='absent'?'':'';
+      const st   = map[name] || 'unsure';
+      updateChipVisual(chip, st);
     });
   }
 
@@ -201,32 +206,34 @@ function initAttendance() {
   function updateChipVisual(chip,state){
     chip.classList.remove('present','unsure','absent');
     chip.classList.add(state);
-    chip.querySelector('.knob-label').textContent =
-        state==='present'?'':state==='absent'?'':'';
+    chip.querySelector('.knob-label').textContent = '';
   }
 
   function writeStatus(chip,state){
     const name = chip.closest('tr').cells[0].textContent.trim();
     const date = datePicker.value, session=sessionPick.value;
-    setDoc(doc(db,'attendance',`${date}_${session}_${name}`),
-      { date, session, name, status:state })
+    const docRef = doc(db,'attendance', `${date}_${session}`);
+    /* merge:true creates doc if somehow missing */
+    setDoc(docRef, { [name]: state }, { merge:true })
       .catch(err=>console.error('Attendance write',err));
   }
 
-  /* ───────────────── bulk mark ─────────────── */
+  /* ───────────────── bulk mark (single write) ─────────────── */
   function applyBulk(state){
     const rows = rosterBody.querySelectorAll('tr:not(.hidden)');
-    const batch = writeBatch(db);
+    const updateObj={};
 
     rows.forEach(row=>{
       const chip=row.querySelector('.chip');
       updateChipVisual(chip,state);
-
       const name=row.cells[0].textContent.trim();
-      batch.set(doc(db,'attendance',`${datePicker.value}_${sessionPick.value}_${name}`),
-        { date:datePicker.value, session:sessionPick.value, name, status:state });
+      updateObj[name]=state;
     });
-    batch.commit().catch(err=>console.error('Bulk write',err));
+
+    const docRef = doc(db,'attendance',
+                      `${datePicker.value}_${sessionPick.value}`);
+    setDoc(docRef, updateObj, { merge:true })
+      .catch(err=>console.error('Bulk write',err));
   }
 
   /* ───────────────── helpers ─────────────── */
@@ -240,7 +247,7 @@ function initAttendance() {
 
   function toggleSessionVisibility(){
     const wd=new Date(datePicker.value).getDay();   // 0 Sun .. 6 Sat
-    const show=(wd===1||wd===2);                    // Tue Wed
+    const show=(wd===1||wd===2);                    // Tue(2) Wed(3)
     sessionPick.style.display = show? 'inline-block':'none';
   }
 }
