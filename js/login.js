@@ -6,7 +6,7 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 function getFriendlyErrorMessage(error) {
   switch (error.code) {
@@ -28,11 +28,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Get the elements from the DOM
   const loginForm = document.getElementById("loginForm");
+  console.log("loginForm is:", loginForm);
   const errorMsg = document.querySelector(".loginForm__errorMessage");
   const forgotPasswordLink = document.getElementById("forgetPassword");
 
+ 
+
   // Listen for form submission. This will trigger when the user hits Enter or clicks the submit button.
   loginForm.addEventListener("submit", function(e) {
+    console.log("Submit handler invoked");
     e.preventDefault(); // Prevent the default form submission behavior
 
     errorMsg.textContent = ""; // Clear previous error message
@@ -48,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Set Firebase persistence and then sign in
     setPersistence(auth, persistence)
       .then(() => {
+        console.log("→ Attempting login with:", { email, password });
         return signInWithEmailAndPassword(auth, email, password);
       })
       .then((userCredential) => {
@@ -55,12 +60,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // Redirect to homepage.html on successful login
         window.location.href = "homepage.html";
       })
-      .catch((error) => {
-        console.error("Login error:", error);
-        console.log("Error code:", error.code);
-        console.log("Error message:", error.message);
-        errorMsg.textContent = getFriendlyErrorMessage(error);
-      });
+
+        .catch((error) => {
+          console.error("Login error:", error);
+          console.log("Error code:", error.code);
+          console.log("Error message:", error.message);
+          errorMsg.textContent = getFriendlyErrorMessage(error);
+        });
   });
 
   // Implement "Forgot Password" functionality.

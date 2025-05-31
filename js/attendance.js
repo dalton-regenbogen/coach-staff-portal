@@ -31,15 +31,12 @@ async function initAttendance() {
   const rosterBody   = document.querySelector('#rosterTable tbody');
   const bulkBar      = document.getElementById('bulkActions');
 
-  /* ---------- restore saved filter state ---------- */
-  datePicker.value  = loadPref('att_date',
-                     new Date().toISOString().split('T')[0]);
-  sessionPick.value = loadPref('att_sess', sessionPick.value);  // AM/PM
-  ageFilter.value   = loadPref('att_age',  'all');
 
-  datePicker .addEventListener('change', e => savePref('att_date', e.target.value));
-  sessionPick.addEventListener('change', e => savePref('att_sess', e.target.value));
-  ageFilter  .addEventListener('change', e => savePref('att_age',  e.target.value));
+ const now = new Date();
+  const y   = now.getFullYear();
+  const m   = String(now.getMonth() + 1).padStart(2, "0");
+  const d   = String(now.getDate()).padStart(2, "0");
+  datePicker.value = `${y}-${m}-${d}`;
 
   /* ---------- one-time roster fetch ---------- */
   await loadRosterOnce();
@@ -85,9 +82,19 @@ async function initAttendance() {
   }
 
   function buildRosterFromArray(swimmers) {
-    swimmers.sort((a,b)=> a.age===b.age
-        ? a.name.localeCompare(b.name)
-        : (a.age||'').localeCompare(b.age||''));
+    swimmers.sort((a, b) => {
+      // parse ages as integers (fallback to 0 if missing)
+      const ageA = parseInt(a.age, 10) || 0;
+      const ageB = parseInt(b.age, 10) || 0;
+
+      // if ages differ, sort by age ascending (youngest first)
+      if (ageA !== ageB) {
+        return ageA - ageB;
+      }
+      // else same age—sort by name
+      return a.name.localeCompare(b.name);
+    });
+
 
     rosterBody.innerHTML = '';
 

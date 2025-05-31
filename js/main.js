@@ -1,53 +1,71 @@
-// Import the authentication and Firestore database instances from firebase-config.js
-import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+// File: /js/main.js
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Listen for changes in the user's sign-in state.
+// 1. Import auth + db from your firebase-config.js
+import { auth, db } from "./firebase-config.js";
+
+// 2. Import the Auth listeners and signOut
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// 3. Import Firestore functions from the Firestore SDK
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Listen for auth state changes
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      // User is logged in:
+      // ─── User is signed in ─────────────────────────────────────
       console.log("User is logged in:", user.email);
-      document.querySelector('.navbar__links').classList.remove('hidden');
-      document.querySelector('.login').style.display = 'none';
-      document.querySelector('.logout').classList.remove('hidden');
 
-      // Fetch the user's role document from Firestore.
+      // Show/hide UI elements accordingly
+
+     // document.querySelector(".logout").classList.remove("hidden");
+
+      // Fetch the userRoles document for this user
       const roleDocRef = doc(db, "userRoles", user.uid);
       try {
         const roleDocSnap = await getDoc(roleDocRef);
-        let role = "coach"; // default role
-        let temporaryPassword = false; // defualt flag
+        let temporaryPassword = false;
+
         if (roleDocSnap.exists()) {
           const data = roleDocSnap.data();
-          role = data.role;
           temporaryPassword = data.temporaryPassword || false;
+          console.log("temporaryPassword flag:", temporaryPassword);
         }
-        console.log("User role:", role);
-        console.log("temporaryPassword Flag:", temporaryPassword);
 
-         // If the temporaryPassword flag is true, force password change
+        // If the user still has a temporary password, force them to change it
         if (temporaryPassword) {
           console.log("Redirecting to change-password page...");
+          // You might want to pass a query param or simply redirect
           window.location.href = "change-password.html";
-          return;  // Stop further processing.
+          return;
         }
-        // Based on the role, you can further adjust the UI here.
-      } catch (error) {
-        console.error("Error fetching role document:", error);
+
+        // If temporaryPassword is false, you can also check data.role here
+        // and show/hide UI elements based on role, e.g.:
+        // let role = data.role || "coach";
+        // if (role === "admin") { ... }
+
+      } catch (fetchError) {
+        console.error("Error fetching role document:", fetchError);
       }
+
     } else {
-      // User is not logged in:
+      // ─── No user is signed in ────────────────────────────────────
       console.log("No user is logged in.");
-      document.querySelector('.navbar__links').classList.add('hidden');
-      document.querySelector('.login').style.display = 'block';
-      document.querySelector('.logout').classList.add('hidden');
+      document.querySelector(".navbar__links").classList.add("hidden");
+      document.querySelector(".login").style.display = "block";
+      document.querySelector(".logout").classList.add("hidden");
     }
   });
 });
 
-// Attach the logout function to the global window object
+// Attach the logout function globally
 window.logout = function() {
   signOut(auth)
     .then(() => {
@@ -58,4 +76,3 @@ window.logout = function() {
       console.error("Error signing out:", error);
     });
 };
-

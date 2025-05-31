@@ -20,7 +20,7 @@
     <div class="wrapper">
       <main>
         <section class="formCard">
-            <form id="loginForm">
+            <form id="loginForm" onsubmit="console.log('📝 inline onsubmit fired');">
               <p>Welcome, <span>sign in to continue</span></p>
               <div class="loginForm-input">
                 <input type="text" id="email" placeholder="Username" required autocomplete="username">
@@ -37,14 +37,14 @@
                   <a href="" id="forgetPassword">Forget Password?</a>
                 </div>
               </div>
-              <button class="accountLogin">Ready, GO!</button>
+              <button  type="submit" class="accountLogin">Ready, GO!</button>
               <p class="loginForm__errorMessage"></p>
             </form>
         </section>
       </main>
     </div> 
     <script type="module" src="/js/firebase-config.js"></script>
-    <script type="module" src="js/login.js"></script>
+    <script type="module" src="/js/login.js"></script>
     <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>
   </body> 
 </html>
