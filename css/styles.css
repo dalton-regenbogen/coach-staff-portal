@@ -1527,6 +1527,10 @@ tbody tr:nth-child(even) {
   background:#d1fae5;; 
 }
 
+th .th-full { display: inline; }
+th .th-sm   { display: none; }
+
+
 @media (max-width: 478px) {
   .metricsH1 {
   padding-block-start: 9rem;
@@ -1563,20 +1567,32 @@ tbody tr:nth-child(even) {
   }
 
   .metricsTable {
-    width: 95%
-  }
+    width: 95%;  }
 
   .metricsTable th {
     font-weight: 700;
-    font-size: .8rem;
-    color: var(--clr-primary-100);
+    font-size: .9rem;
+    color: var(--clr-primary-00);
     padding: .4rem .2rem;
+    border: 2px solid black;
+
   }
 
  .metricsTable td {
     border-bottom:1px solid #e5e7eb;
-    font-size: .55rem;
+    font-size: .85rem;
+    text-align: start;
+    
+
   } 
+
+  th .th-full {
+    display: none; 
+  }
+
+  th .th-sm { 
+    display: inline;
+  }
 }
 
 /* Swimmer-Notes.html */
