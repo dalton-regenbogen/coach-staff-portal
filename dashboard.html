@@ -3,13 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header></header>
-  <main> <button class="logout hidden" onclick="logout()">Log Out</button> </main>
-  <footer></footer>
+  <header>
+    <div class="wrapper">
+      <nav class="navBar">
+        <ul class="navList-leftSide">
+          <li><a class="navLink" href="TheBrand.html">THE BRAND</a></li>
+          <li><a class="navLink" href="#">FAMILY</a></li>
+          <li><a class="navLink" href="#">RESOURCES</a></li>
+          <li><a class="navLink" href="#">PRACTICES</a></li>
+        </ul>
+        <div class="navLogo"><a href="homepage.html"><img src="/assets/website-logo.svg"></a></div>
+        <div class="navList-rightSide">
+          <a class="navIcon" href="attendance.html"><i class="fa-regular fa-square-check"></i></a>
+          <a class="navIcon" href="metrics.html"><i class="fa-solid fa-filter"></i></a>
+          <a class="navIcon" href="dashboard.html"><i class="fa-regular fa-circle-user"></i></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======== Dashboard HTML ======== -->
+  <main class="dashboard-container">
+    <div class="wrapper">
+      <!-- 1. Welcome + Log Out -->
+      <div class="dashboard-top">
+        <div id="welcomeCoach" class="dashboard-welcome">
+          Welcome, Coach!
+        </div>
+        <button class="logout" onclick="logout()">Log Out</button>
+      </div>
+
+      <!-- 2. All Cards in a Responsive Grid -->
+      <div class="cards-grid">
+
+        <!-- 2.1 Attendance Leaderboard -->
+        <div class="card" id="leaderboardCard">
+          <h3>Attendance Leaderboard (This Week)</h3>
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Coach</th>
+                <th># Clicks</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <!-- JS will insert rows here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2.2 Quick Attendance Stats -->
+        <div class="card" id="quickStatsCard">
+          <h3>Your Attendance This Week</h3>
+          <p id="sessionCount">Loading…</p>
+          <ul id="attendancePercentList">
+            <!-- JS will insert one <li> per age group (e.g. “9–10: 85%”) -->
+          </ul>
+        </div>
+
+        <!-- 2.3 Jump-to-Attendance & Swimmer Notes -->
+        <div class="card card-cta" id="ctaCard">
+          <a href="/attendance.html" class="button-primary">🏊 Go to Attendance</a>
+          <a href="/swimmer-notes.html" class="button-secondary">📝 Swimmer Notes</a>
+        </div>
+
+        <!-- 2.4 Upcoming Events -->
+        <div class="card" id="eventsCard">
+          <h3>Upcoming Events</h3>
+          <ul id="upcomingEventsList">
+            <li>Loading…</li>
+          </ul>
+        </div>
+
+        <!-- 2.5 Coach Handbook -->
+        <div class="card" id="handbookCard">
+          <h3>Your Handbook</h3>
+          <div id="coachHandbooks">
+            Loading…
+          </div>
+        </div>
+
+        <!-- 2.6 Upcoming Swimmer Birthdays -->
+        <div class="card" id="birthdaysCard">
+          <h3>Upcoming Birthdays</h3>
+          <ul id="birthdayList">
+            <li>Loading…</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer >
+        <div class="wrapper">
+          <div class="footerGrid">
+            <div class="footerSection footerOne">
+              <div class="footerNav-linkLeft">
+                <ul>
+                  <li><a class="footerNav-linkLeft-title" href="TheBrand.html">THE BRAND</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#MV-Section">Mission & Vision</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="TheBrand.html#CV-Section">Core Values</a></li>
+                </ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">FAMILY</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">RESOURCES</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+              <div class="footerNav-linkLeft">
+                <Ul>
+                  <li><a class="footerNav-linkLeft-title" href="#">PRACTICES</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                  <li><a class="footerNav-linkLeft-subtitle" href="#">Example</a></li>
+                </Ul>
+              </div>
+            </div>
+            <div class="footerSection footerTwo">
+              <div class="footerLogo"><a href="#index"><img src="/assets/website-logo-white.png"></a></div>
+              <address>7197 Riley Rd Warrenton, VA 20187</address>
+              <p>2025 Brookside Hurricanes Coaching Portal. All Rights Reserved.</p>
+            </div>
+            <div class="footerSection footerThree">
+              <a href="#">ACCOUNT DASHBOARD</a>
+              <a href="attendance.html">ATTENDANCE TRACKER</a>
+              <a href="metrics.html">ATTENDANCE METRICS</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+  <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>    
   <script type="module" src="/js/firebase-config.js"></script>
   <script type="module" src="/js/main.js"></script>
 </body>
 </html>
+
+

@@ -139,22 +139,56 @@ async function refresh(){
       labels.map(k=>Math.round(dayMap[k].present*100/dayMap[k].total));
   trendChart.update();
 
-  /* Table */
-  tbody.innerHTML='';
-  Object.entries(swimmers)
-    .sort((a,b)=>b[1].present-b[1].present)
-    .forEach(([name,s])=>{
-      const total=s.present+s.absent+s.unsure;
-      const tr=document.createElement('tr');
-      tr.innerHTML=`
-        <td>${name}</td>
-        <td>${s.ageGrp}</td>
-        <td>${total?Math.round(s.present*100/total):0}%</td>
-        <td>${s.present}</td><td>${s.absent}</td><td>${s.unsure}</td>`;
-      if(s.present>=WEEK_GOAL) tr.classList.add('goal');
-      tr.onclick=()=>openModal(name,s);
-      tbody.appendChild(tr);
-    });
+     /* Table */
+    tbody.innerHTML = '';
+
+    Object.entries(swimmers)
+      .sort((aEntry, bEntry) => {
+        const [nameA, sA] = aEntry;
+        const [nameB, sB] = bEntry;
+
+        // 1) Compare Percentage present (descending)
+        const totalA = sA.present + sA.absent + sA.unsure;
+        const totalB = sB.present + sB.absent + sB.unsure;
+        const percA = totalA ? sA.present / totalA : 0;
+        const percB = totalB ? sB.present / totalB : 0;
+        if (percB !== percA) {
+          return percB - percA;
+        }
+
+        // 2) Percentages tie → compare age groups (youngest → oldest).
+        //    We assume age groups are strings like "9-10", "11-12", etc.
+        //    Extract the lower number before the dash:
+        function parseAgeGroup(str) {
+          // If empty or non-parsable, put at the end
+          const parts = String(str).split('-');
+          const n = parseInt(parts[0], 10);
+          return isNaN(n) ? Infinity : n;
+        }
+        const ageA = parseAgeGroup(sA.ageGrp);
+        const ageB = parseAgeGroup(sB.ageGrp);
+        if (ageA !== ageB) {
+          return ageA - ageB;  // younger (smaller number) comes first
+        }
+
+        // 3) Age groups tie → alphabetical by swimmer name (A→Z)
+        return nameA.localeCompare(nameB);
+      })
+      .forEach(([name, s]) => {
+        const total = s.present + s.absent + s.unsure;
+        const percent = total ? Math.round(s.present * 100 / total) : 0;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${name}</td>
+          <td>${s.ageGrp}</td>
+          <td>${percent}%</td>
+          <td>${s.present}</td>
+          <td>${s.absent}</td>
+          <td>${s.unsure}</td>`;
+        if (s.present >= WEEK_GOAL) tr.classList.add('goal');
+        tr.onclick = () => openModal(name, s);
+        tbody.appendChild(tr);
+      });
 }
 
 /* Modal */
