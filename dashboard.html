@@ -38,42 +38,16 @@
           Welcome, Coach!
         </div>
         <button class="logout" onclick="logout()">Log Out</button>
+
+        <div class="dashboardLinks card-cta" id="ctaCard">
+          <a href="/attendance.html" class="attendance-button">Attendance</a>
+          <a href="/meets-notes.html" class="meetNotes-button">Swimmer Notes</a>
+          <a href="#" class="handbook-button">Meet Notes</a>
+        </div>
       </div>
 
       <!-- 2. All Cards in a Responsive Grid -->
       <div class="cards-grid">
-
-        <!-- 2.1 Attendance Leaderboard -->
-        <div class="card" id="leaderboardCard">
-          <h3>Attendance Leaderboard (This Week)</h3>
-          <table class="leaderboard-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Coach</th>
-                <th># Clicks</th>
-              </tr>
-            </thead>
-            <tbody id="leaderboardBody">
-              <!-- JS will insert rows here -->
-            </tbody>
-          </table>
-        </div>
-
-        <!-- 2.2 Quick Attendance Stats -->
-        <div class="card" id="quickStatsCard">
-          <h3>Your Attendance This Week</h3>
-          <p id="sessionCount">Loading…</p>
-          <ul id="attendancePercentList">
-            <!-- JS will insert one <li> per age group (e.g. “9–10: 85%”) -->
-          </ul>
-        </div>
-
-        <!-- 2.3 Jump-to-Attendance & Swimmer Notes -->
-        <div class="card card-cta" id="ctaCard">
-          <a href="/attendance.html" class="button-primary">🏊 Go to Attendance</a>
-          <a href="/swimmer-notes.html" class="button-secondary">📝 Swimmer Notes</a>
-        </div>
 
         <!-- 2.4 Upcoming Events -->
         <div class="card" id="eventsCard">
@@ -81,14 +55,6 @@
           <ul id="upcomingEventsList">
             <li>Loading…</li>
           </ul>
-        </div>
-
-        <!-- 2.5 Coach Handbook -->
-        <div class="card" id="handbookCard">
-          <h3>Your Handbook</h3>
-          <div id="coachHandbooks">
-            Loading…
-          </div>
         </div>
 
         <!-- 2.6 Upcoming Swimmer Birthdays -->
