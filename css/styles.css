@@ -1640,7 +1640,7 @@ th .th-sm   { display: none; }
   background-color: var(--clr-primary-100);
   position: relative;
   transition: all 250ms;
-  z-index: 1;
+  z-index: 0;
 }
 
 .logout::before {
@@ -1707,17 +1707,6 @@ th .th-sm   { display: none; }
   font-weight: 700;
 }
 
-/* 4. Attendance Leaderboard Table */
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.leaderboard-table th,
-.leaderboard-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
-}
 .highlight-row {
   background-color: #fffbec; /* Light yellow for logged-in coach */
 }
@@ -1740,15 +1729,8 @@ th .th-sm   { display: none; }
   text-align: center;
   padding: 24px;
 }
-.attendance-button {
-  background-color: var(--clr-primary-300);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 6px;
-  text-decoration: none;
-  display: inline-block;
-  margin-inline-end: 1rem;
-}
+
+
 .meetNotes-button {
   background-color: var(--clr-primary-300);
   color: #fff;
@@ -1761,16 +1743,6 @@ th .th-sm   { display: none; }
   margin-inline-end: 1rem;
 }
 
-.handbook-button {
-  background-color: var(--clr-primary-300);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 6px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-}
 .button-primary:hover,
 .button-secondary:hover {
   opacity: 0.9;
@@ -1793,10 +1765,6 @@ th .th-sm   { display: none; }
   border-bottom: none;
 }
 
-/* 8. Coach Handbook Section */
-#coachHandbooks {
-  /* If you eventually list multiple items, use a vertical stack */
-}
 .handbook-item {
   margin-bottom: 12px;
 }
