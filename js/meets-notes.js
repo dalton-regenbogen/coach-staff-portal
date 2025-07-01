@@ -16,6 +16,7 @@ import {
 // Age groups to display
 const AGE_GROUPS = ["8U", "9-10", "11-12", "13-14", "15-18"];
 let currentMeetId = null;
+let unsubscribeNotes = null;
 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
@@ -49,6 +50,10 @@ function initMeetsNotesPage() {
   meetSelect.addEventListener("change", (e) => {
     currentMeetId = e.target.value;
     clearAllGroups();
+    if (unsubscribeNotes) {
+      unsubscribeNotes();
+      unsubscribeNotes = null;
+    }
     if (currentMeetId) {
       renderGroupTemplates();
       subscribeToNotes(currentMeetId);
@@ -91,18 +96,38 @@ function renderGroupTemplates() {
 function subscribeToNotes(meetId) {
   const notesCol = collection(db, "events", meetId, "notes");
   const q = query(notesCol, orderBy("createdAt", "asc"));
-  onSnapshot(q, (snapshot) => {
-    // Clear out old rows
-    AGE_GROUPS.forEach(group => {
-      const tbody = document.querySelector(`.age-group[data-group="${group}"] tbody`);
-      tbody.innerHTML = "";
-    });
-    // Render each note
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const tr = createRowElement(docSnap.id, data);
-      const tbody = document.querySelector(`.age-group[data-group="${data.group}"] tbody`);
-      if (tbody) tbody.appendChild(tr);
+  unsubscribeNotes = onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach(change => {
+      const noteId = change.doc.id;
+      const data = change.doc.data();
+      if (change.type === "added") {
+        const tbody = document.querySelector(`.age-group[data-group="${data.group}"] tbody`);
+        if (tbody && !tbody.querySelector(`tr[data-note-id="${noteId}"]`)) {
+          const tr = createRowElement(noteId, data);
+          tbody.appendChild(tr);
+        }
+      } else if (change.type === "modified") {
+        const tr = document.querySelector(`tr[data-note-id="${noteId}"]`);
+        if (tr) {
+          const inputs = tr.querySelectorAll("input");
+          const activeEl = document.activeElement;
+          const editing = Array.from(inputs).some(inp => inp === activeEl);
+          if (!editing) {
+            inputs[0].value = data.name || "";
+            inputs[1].value = data.add || "";
+            inputs[2].value = data.out || "";
+          }
+          const currentGroup = tr.closest('.age-group').dataset.group;
+          if (currentGroup !== data.group) {
+            const newTbody = document.querySelector(`.age-group[data-group="${data.group}"] tbody`);
+            if (newTbody) newTbody.appendChild(tr);
+            tr.dataset.group = data.group;
+          }
+        }
+      } else if (change.type === "removed") {
+        const tr = document.querySelector(`tr[data-note-id="${noteId}"]`);
+        if (tr && tr.parentNode) tr.parentNode.removeChild(tr);
+      }
     });
   });
 }
@@ -123,6 +148,7 @@ async function addNoteDoc(group) {
 function createRowElement(noteId, { group, name = '', add = '', out = '' }) {
   const tr = document.createElement("tr");
   tr.dataset.noteId = noteId;
+  tr.dataset.group = group;
 
   [name, add, out].forEach((val, idx) => {
     const td = document.createElement("td");
@@ -130,7 +156,7 @@ function createRowElement(noteId, { group, name = '', add = '', out = '' }) {
     input.type = "text";
     input.value = val;
     input.className = "notes-input";
-    input.addEventListener("blur", () => updateNote(noteId, group, tr));
+    input.addEventListener("blur", () => updateNote(noteId, tr));
     td.appendChild(input);
     tr.appendChild(td);
   });
@@ -146,7 +172,8 @@ function createRowElement(noteId, { group, name = '', add = '', out = '' }) {
   return tr;
 }
 
-async function updateNote(noteId, group, tr) {
+async function updateNote(noteId, tr) {
+  const group = tr.dataset.group;
   const cells = tr.querySelectorAll("input");
   const data = {
     group,
