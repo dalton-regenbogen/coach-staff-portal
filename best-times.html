@@ -28,88 +28,76 @@
           </nav>
         </div>
       </header>
-        <main>
-          <section class="bentoBox" id="bentobox">
-            <div class="wrapper">
-              <h2 class="bentoTitle">Our Team, Our Legacy</h2>
-              <div class="bentoContainer">
-                <div class="bentoCard bentoOne">
-                  <div>
-                    <p class="bentoOne-big">17</p>
-                    <p class="bentoOne-little">UNFORGETTABLE SUMMERS</p>
-                  </div>
-                  <div class="bentoCard-title">
-                    <h3>Years Together</h3>
-                  </div>
-                </div>
-                <div class="bentoCard bentoTwo">
-                  <div class="bentoCard-title">
-                    <h3>Athletes Inspired</h3>
-                  </div>
-                  <div>
-                    <p class="bentoTwo-big">1,000+</p>
-                    <p class="bentoTwo-little">& Counting</p>
-                  </div>
-                </div>
-                <div class="bentoCard bentoThree">
-                  <p class="bentoThree-big">200+</p>
-                  <div class="bentoCard-title">
-                    <h3>Meets & Memories</h3>
-                  </div>
-                </div>
-                <div class="bentoCard bentoFour">
-                  <div class="bentoCard-title">
-                    <h3>Coaching Legacies</h3>
-                  </div>
-                  <div>
-                    <p class="bentoFour-big">40+</p>
-                    <p class="bentoFour-little">Coaching Journeys Started</p>
-                  </div>
-                </div>
-              </div>
+      <main>
+        <div class="wrapper">
+            <div class="bestTimes-Section">
+              <h1 class="text-2xl font-bold mb-4">Athlete Best Times</h1>
+
+            <!-- CSV Upload  --->
+            <div class="hidden">
+              <label class="block mb-4">
+                <span class="block text-sm font-medium text-gray-700">Upload CSV:</span>
+                <input id="csv-file" type="file" accept=".csv"
+                      class="mt-1 block w-full text-sm text-gray-900
+                              border border-gray-300 rounded-lg
+                              cursor-pointer bg-white focus:outline-none"/>
+              </label>  
             </div>
-          </section>
-          
-          <div class="wrapper">
-            <section class="coreValue-container">
-              <h2>The Core of BHST Coaching Excellence</h2>
-              <div class="cardContainer-one">
-                <div class="coreValue-Card cardOne">
-                  <h3>GROWTH</h3>
-                  <p>"Always learning, always improving."</p>
-                  <a class="coreValue-link" href="TheBrand.html#CoreValues-Section">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
-                  <i class="fa-solid fa-x"></i>
-                </div>
-                <div class="coreValue-Card cardTwo">
-                  <h3>KINDNESS</h3>
-                  <p>"Building a supportive and empathetic culture."</p>
-                  <a class="coreValue-link" href="TheBrand.html#CoreValues-Section">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
-                  <i class="fa-solid fa-x"></i>
-                </div>
-                <div class="coreValue-Card cardThree">
-                  <h3>COMMUNICATION</h3>
-                  <p>"Promoting clarity, openness, and collaboration."</p>
-                  <a class="coreValue-link" href="TheBrand.html#CoreValues-Section">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
-                  <i class="fa-solid fa-x"></i>
-                </div>
-                <div class="coreValue-Card cardFour">
-                  <h3>COMMUNITY</h3>
-                  <p>"Creating a united, supportive family."</p>
-                  <a class="coreValue-link" href="TheBrand.html#CoreValues-Section">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
-                  <i class="fa-solid fa-x"></i>
-                </div>
-                <div class="coreValue-Card cardFive">
-                  <h3>AMBITION</h3>
-                  <p>"Fueling relentless pursuit of goals."</p>
-                  <a class="coreValue-link" href="TheBrand.html#CoreValues-Section">DIVE IN<i class="fa-solid fa-arrow-right"></i></a>
-                  <i class="fa-solid fa-x"></i>
-                </div>
-              </div>
-            </section>
-          </div>  
-        </main>
-      </div>
-      <footer >
+
+            <input id="search-name" type="text" placeholder="Search by name" class="searchInput"/>
+           
+            <div class="bestTimes-Filters">
+              <label class="">
+                <span class="">Age Group:</span>
+                <select id="filter-age-group" class="">
+                  <option value="">All</option>
+                </select>
+              </label>
+
+              <label class="">
+                <span class="">Event:</span>
+                <select id="filter-event" class="">
+                  <option value="">All</option>
+                  <!-- dynamically populated -->
+                </select>
+              </label>
+
+              <label class="">
+                <span class="">Split:</span>
+                <select id="global-split" class="">
+                  <option value="1">Full</option>
+                  <option value="2">Half (½)</option>
+                  <option value="4">Quarter (¼)</option>
+                </select>
+              </label>
+            </div>
+
+            <!-- Data Table -->
+            <table class="bestTimes-Table">
+              <thead class="">
+                <tr>
+                  <th id="th-rank" class="leftRadius">Rank</th>
+                  <th class="">Name</th>
+                  <th class="">Age Group</th>
+                  <th class="">Event</th>
+                  <th id="th-time" class="rightRadius">Time</th>
+                </tr>
+              </thead>
+              <tbody id="times-body"></tbody>
+            </table>
+          </div>
+
+          <div id="modal" class="modal-overlay hidden">
+            <div class="modal-content">
+              <h2 class="btModal-Title">Swimmer Details</h2>
+              <div id="modal-body" class="space-y-2 max-h-64 overflow-y-auto"></div>
+              <button onclick="closeModal()" class="btModal-Close">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </main>
+      <footer>
         <div class="wrapper">
           <div class="footerGrid">
             <div class="footerSection footerOne">
@@ -160,6 +148,6 @@
       </footer>
     <script src="https://kit.fontawesome.com/f7c7da88f5.js" crossorigin="anonymous"></script>    
     <script type="module" src="/js/firebase-config.js"></script>
-    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/best-times.js"></script>
   </body>
 </html>
