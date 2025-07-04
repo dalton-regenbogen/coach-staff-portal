@@ -1754,12 +1754,14 @@ th .th-sm   { display: none; }
   list-style: none;
   padding: 0;
 }
+
 #eventsCard li,
 #birthdaysCard li {
   padding: 12px 0;
   border-bottom: 1px solid #eee;
   font-size: 0.95rem;
 }
+
 #eventsCard li:last-child,
 #birthdaysCard li:last-child {
   border-bottom: none;
@@ -1773,6 +1775,7 @@ th .th-sm   { display: none; }
   text-decoration: none;
   font-weight: 500;
 }
+
 .handbook-item small {
   display: block;
   color: #666;
@@ -2021,12 +2024,16 @@ th .th-sm   { display: none; }
   .bestTimes-Section h1 {
   font-size: 2rem;
   line-height: .5;
+  padding-bottom: .5rem;
   }
 
   .bestTimes-Filters {
     width: 95%;
     font-size: 1rem;
-    padding-block: 1rem;
+  }
+
+  .filterGrid {
+
   }
 
   .bestTimes-Table {
@@ -2034,10 +2041,15 @@ th .th-sm   { display: none; }
   }
 
   .bestTimes-Table thead {
-  font-size: .8rem;
+  font-size: .75rem;
   } 
 
   .bestTimes-Table td {
-    font-size: .5rem;
+    font-size: .55rem;
+  }
+
+  .bestTimes-Table .leftRadius {
+    border-top-left-radius: 5px;
+    padding-inline-start: .5rem;
   }
 }
