@@ -1934,12 +1934,13 @@ th .th-sm   { display: none; }
 .bestTimes-Filters {
   display: flex;
   gap: .5rem;
-  
   text-align: center;
   color: var(--clr-primary-300);
   font-size: 1rem;
   font-weight: 600;
 }
+
+
 
 .bestTimes-Table {
   width: 50rem;
@@ -1968,8 +1969,6 @@ th .th-sm   { display: none; }
 .bestTimes-Table .rightRadius {
     border-top-right-radius: 5px;
 }
-
-
 
 .hidden {
   display: none !important;
@@ -2032,8 +2031,15 @@ th .th-sm   { display: none; }
     font-size: 1rem;
   }
 
-  .filterGrid {
+  .bestTimes-Filters label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  }
 
+
+  .bestTimes-Filters label select {
+  width: 100%;
   }
 
   .bestTimes-Table {
